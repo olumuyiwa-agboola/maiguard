@@ -1,12 +1,8 @@
+using Maiguard.API.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddRouting(options =>
-{
-    options.LowercaseUrls = true;
-});
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+ServiceConfigurator.ConfigureServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 

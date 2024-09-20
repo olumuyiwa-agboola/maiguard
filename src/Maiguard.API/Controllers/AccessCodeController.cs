@@ -6,7 +6,21 @@ namespace Maiguard.API.Controllers
     [Route("api/v1/[controller]")]
     public class AccessCodeController : ControllerBase
     {
-        private readonly string _message = "This feature is yet to be implemented. Contributions to the development of this feature are welcome at https://github.com/olumuyiwa-agboola/maiguard-api";
+        private static readonly string _message = "This feature is yet to be implemented. Contributions to " +
+            "the development of this feature are welcome at https://github.com/olumuyiwa-agboola/maiguard-api";
+
+        private static readonly ApiResponse _defaultResponse = new()
+        {
+            ResponseCode = ResponseCodes.Success.Item1,
+            ResponseDescription = ResponseCodes.Success.Item2,
+            Data = _message
+        };
+
+        private readonly ApiResponseWithStatusCode _defaultResponseWithStatusCode = new()
+        {
+            StatusCode = StatusCodes.Status200OK,
+            ApiResponse = _defaultResponse
+        };
 
         [HttpPost]
         [Route("Generate")]
@@ -16,10 +30,7 @@ namespace Maiguard.API.Controllers
         [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status500InternalServerError)]
         public IActionResult GenerateAccessCode()
         {
-            return Ok(new
-            {
-                message = _message
-            });
+            return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
         }
 
         [HttpPost]
@@ -30,10 +41,7 @@ namespace Maiguard.API.Controllers
         [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status500InternalServerError)]
         public IActionResult VerifyAccessCode()
         {
-            return Ok(new
-            {
-                message = _message
-            });
+            return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
         }
 
         [HttpDelete]
@@ -44,10 +52,7 @@ namespace Maiguard.API.Controllers
         [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status500InternalServerError)]
         public IActionResult CancelAccessCode()
         {
-            return Ok(new
-            {
-                message = _message
-            });
+            return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
         }
     }
 }

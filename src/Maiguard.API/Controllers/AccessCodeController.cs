@@ -2,8 +2,8 @@
 
 namespace Maiguard.API.Controllers
 {
-    [ApiController]
     [Route("api/v1/[controller]")]
+    [ApiController]
     public class AccessCodeController : ControllerBase
     {
         private static readonly string _message = "This feature is yet to be implemented. Contributions to " +

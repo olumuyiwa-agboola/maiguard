@@ -1,4 +1,4 @@
-﻿namespace Maiguard.API
+﻿namespace Maiguard.API.Utilities
 {
     public class ResponseCodes
     {

@@ -5,6 +5,10 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maiguard.API", "src\Maiguard.API\Maiguard.API.csproj", "{DFA83165-8AF1-421B-A96C-B118EF1F7990}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maiguard.Infrastructure", "src\Maiguard.Infrastructure\Maiguard.Infrastructure.csproj", "{7FD925E5-20A9-42A9-8058-C81707B70532}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maiguard.Core", "src\Maiguard.Core\Maiguard.Core.csproj", "{C0F4A2FB-919A-4EB6-820D-207008F737B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{DFA83165-8AF1-421B-A96C-B118EF1F7990}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFA83165-8AF1-421B-A96C-B118EF1F7990}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFA83165-8AF1-421B-A96C-B118EF1F7990}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FD925E5-20A9-42A9-8058-C81707B70532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FD925E5-20A9-42A9-8058-C81707B70532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FD925E5-20A9-42A9-8058-C81707B70532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FD925E5-20A9-42A9-8058-C81707B70532}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0F4A2FB-919A-4EB6-820D-207008F737B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0F4A2FB-919A-4EB6-820D-207008F737B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0F4A2FB-919A-4EB6-820D-207008F737B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0F4A2FB-919A-4EB6-820D-207008F737B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

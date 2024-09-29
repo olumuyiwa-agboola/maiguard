@@ -1,5 +1,6 @@
-﻿using Maiguard.API.Models.APIResponseModels;
-using Maiguard.API.Utilities;
+﻿using Maiguard.Core.Abstractions.IServices;
+using Maiguard.Core.Models.APIResponseModels;
+using Maiguard.Core.Models.Residents;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,16 +8,16 @@ namespace Maiguard.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class ResidentsController : ControllerBase
+    public class ResidentsController(IResidentService residentService) : ControllerBase
     {
-        private static readonly string _message = "This feature is yet to be implemented. Contributions to " +
+        private static readonly string _message = "Feature not available";
+        private static readonly string _data = "This feature is yet to be implemented. Contributions to " +
             "the development of this feature are welcome at https://github.com/olumuyiwa-agboola/maiguard-api";
 
         private static readonly ApiResponse _defaultResponse = new()
         {
-            ResponseCode = ResponseCodes.Success.Item1,
-            ResponseDescription = ResponseCodes.Success.Item2,
-            Data = _message
+            Message = _message,
+            Data = _data
         };
 
         private readonly ApiResponseWithStatusCode _defaultResponseWithStatusCode = new()
@@ -26,35 +27,38 @@ namespace Maiguard.API.Controllers
         };
 
         [HttpPost]
-        [Route("Add")]
+        [Route("SignUp")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status500InternalServerError)]
-        public IActionResult AddResident()
+        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> SignUpResident(NewResident newResident)
         {
-            return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
+            var response = await residentService.SignUpResident(newResident);
+            return StatusCode(response.StatusCode, response.ApiResponse);
         }
 
         [HttpPost]
         [Route("Activate")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status500InternalServerError)]
-        public IActionResult ActivateResident()
+        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ActivateResident(NewResident newResident)
         {
+            var response = await residentService.ActivateResident(newResident);
             return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
         }
 
         [HttpPost]
         [Route("Deactivate")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status500InternalServerError)]
-        public IActionResult DeactivateResident()
+        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeactivateResident(NewResident newResident)
         {
+            var response = await residentService.DeactivateResident(newResident);
             return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
         }
     }

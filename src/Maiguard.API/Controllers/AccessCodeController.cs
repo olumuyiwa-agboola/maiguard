@@ -1,5 +1,4 @@
-﻿using Maiguard.API.Models.APIResponseModels;
-using Maiguard.API.Utilities;
+﻿using Maiguard.Core.Models.APIResponseModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Maiguard.API.Controllers
@@ -8,14 +7,14 @@ namespace Maiguard.API.Controllers
     [ApiController]
     public class AccessCodeController : ControllerBase
     {
-        private static readonly string _message = "This feature is yet to be implemented. Contributions to " +
+        private static readonly string _message = "Feature not available";
+        private static readonly string _data = "This feature is yet to be implemented. Contributions to " +
             "the development of this feature are welcome at https://github.com/olumuyiwa-agboola/maiguard-api";
 
         private static readonly ApiResponse _defaultResponse = new()
         {
-            ResponseCode = ResponseCodes.Success.Item1,
-            ResponseDescription = ResponseCodes.Success.Item2,
-            Data = _message
+            Message = _message,
+            Data = _data
         };
 
         private readonly ApiResponseWithStatusCode _defaultResponseWithStatusCode = new()
@@ -27,9 +26,9 @@ namespace Maiguard.API.Controllers
         [HttpPost]
         [Route("Generate")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public IActionResult GenerateAccessCode()
         {
             return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
@@ -38,9 +37,9 @@ namespace Maiguard.API.Controllers
         [HttpPost]
         [Route("Verify")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public IActionResult VerifyAccessCode()
         {
             return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
@@ -49,9 +48,9 @@ namespace Maiguard.API.Controllers
         [HttpDelete]
         [Route("Cancel")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(CustomProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public IActionResult CancelAccessCode()
         {
             return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);

@@ -1,4 +1,4 @@
-﻿namespace Maiguard.API.Models.APIResponseModels
+﻿namespace Maiguard.Core.Models.APIResponseModels
 {
     public class ApiResponseWithStatusCode
     {
@@ -8,8 +8,8 @@
         public required int StatusCode { get; set; }
 
         /// <summary>
-        /// Object containing response code, response description and response data
+        /// Object containing API response message and response data
         /// </summary>
-        public required ApiResponse ApiResponse { get; set; }
+        public required object ApiResponse { get; set; }
     }
 }

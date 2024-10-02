@@ -54,6 +54,26 @@ namespace Maiguard.Core.Factories
         }
 
         /// <summary>
+        /// Builds and returns an API response that indicates a record already exists in the database
+        /// </summary>
+        /// <param name="message">Messahe to be returned as the API response data</param>
+        /// <returns>ApiResponseWithStatusCode</returns>
+        public static ApiResponseWithStatusCode DuplicateRecord(string message)
+        {
+            return new ApiResponseWithStatusCode()
+            {
+                StatusCode = (int)HttpStatusCode.Conflict,
+                ApiResponse = new ProblemDetails()
+                {
+                    Status = (int)HttpStatusCode.Conflict,
+                    Instance = "instance",
+                    Title = message,
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.9",
+                }
+            };
+        }
+
+        /// <summary>
         /// Builds and returns an API response that indicates an internal server error occured
         /// </summary>
         /// <param name="message">Message to be returned as the ProblemDetail title</param>

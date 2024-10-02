@@ -51,10 +51,26 @@ namespace Maiguard.Core.Services
 
             int result = _residentRepository.InsertNewResident(newResident, residentId);
 
-            if (result == 1)
-                return ApiResponseFactory.Success("Resident account opened successfully!", newResident);
-            else
-                return ApiResponseFactory.FailedValidation(result);
+            while (result == 1000)
+            {
+                residentId = ResidentUtilities.GenerateResidentId(communityId);
+                result = _residentRepository.InsertNewResident(newResident, residentId);
+            }
+
+            switch (result)
+            {
+                case 2000:
+                    return ApiResponseFactory.DuplicateRecord("Email address already exists.");
+
+                case 3000:
+                    return ApiResponseFactory.DuplicateRecord("Phone number already exists.");
+
+                case 1:
+                    return ApiResponseFactory.Success("Resident account opened successfully!", newResident);
+
+                default:
+                    return ApiResponseFactory.InternalServerError();
+            }
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace Maiguard.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class ResidentsController(IResidentService residentService) : ControllerBase
+    public class ResidentController(IResidentService residentService) : ControllerBase
     {
         private static readonly string _message = "Feature not available";
         private static readonly string _data = "This feature is yet to be implemented. Contributions to " +

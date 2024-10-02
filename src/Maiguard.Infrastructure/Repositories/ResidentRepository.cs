@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Maiguard.Core.Abstractions.IRepositories;
 using Maiguard.Core.Models.Residents;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Maiguard.Infrastructure.Repositories
     {
         public int InsertNewResident(NewResident newResident, string residentId)
         {
-            int affectedRows = 0;
+            int result = 0;
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("ResidentId", residentId);
@@ -45,22 +46,17 @@ namespace Maiguard.Infrastructure.Repositories
                             ELSE
                                 BEGIN
                                     INSERT INTO [Maiguard].[dbo].[Residents] (ResidentId, CommunityId, FirstName, LastName, EmailAddress, PhoneNumber, RelativeAddress, OnboardedBy, IsActiveLastUpdatedBy, RecordLastUpdatedBy)
-                                    VALUES (@ResidentId, @CommunityId, @FirstName, @LastName, @EmailAddress, @PhoneNumber, @RelativeAddress, @OnboardedBy, @IsActiveLastUpdatedBy, @RecordLastUpdatedBy)
+                                    VALUES (@ResidentId, @CommunityId, @FirstName, @LastName, @EmailAddress, @PhoneNumber, @RelativeAddress, @OnboardedBy, @IsActiveLastUpdatedBy, @RecordLastUpdatedBy);
 
                                     SELECT 1;
                                 END";
 
             using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
             {
-                if (dbConnection.State != ConnectionState.Open)
-                    dbConnection.Open();
-
-                affectedRows = dbConnection.Execute(newResidentInsertStatement, parameters);
-
-                dbConnection.Close();
+                result = dbConnection.Query<int>(newResidentInsertStatement, parameters).FirstOrDefault();
             }
 
-            return affectedRows;
+            return result;
         }
     }
 }

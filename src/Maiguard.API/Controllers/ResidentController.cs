@@ -13,7 +13,7 @@ namespace Maiguard.API.Controllers
         [HttpPost]
         [Route("SignUp")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> SignUpResident(ResidentRegistrationRequest request)
@@ -25,7 +25,7 @@ namespace Maiguard.API.Controllers
         [HttpPost]
         [Route("Activate")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public IActionResult ActivateResident(ResidentActivationRequest request)
@@ -37,7 +37,7 @@ namespace Maiguard.API.Controllers
         [HttpPost]
         [Route("Deactivate")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public IActionResult DeactivateResident(ResidentDeactivationRequest request)

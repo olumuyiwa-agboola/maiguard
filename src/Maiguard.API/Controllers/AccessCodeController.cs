@@ -26,7 +26,7 @@ namespace Maiguard.API.Controllers
         [HttpPost]
         [Route("Generate")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public IActionResult GenerateAccessCode()
@@ -37,7 +37,7 @@ namespace Maiguard.API.Controllers
         [HttpPost]
         [Route("Verify")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public IActionResult VerifyAccessCode()
@@ -48,7 +48,7 @@ namespace Maiguard.API.Controllers
         [HttpDelete]
         [Route("Cancel")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public IActionResult CancelAccessCode()

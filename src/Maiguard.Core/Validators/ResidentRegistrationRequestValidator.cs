@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Maiguard.Core.Constants;
+using Maiguard.Core.Libraries;
 using Maiguard.Core.Models.Residents;
 
 namespace Maiguard.Core.Validators
@@ -14,27 +15,15 @@ namespace Maiguard.Core.Validators
         {
             RuleFor(model => model.CommunityId).CommunityIdValidator();
 
-            RuleFor(model => model.FirstName)
-                .NotEmpty().WithMessage(ValidationMessages.PropertyIsRequired)
-                .MaximumLength(50).WithMessage(ValidationMessages.MaximumLengthExceeded)
-                .Matches(ValidationRegexes.FirstName).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.FirstName);
+            RuleFor(model => model.FirstName).NameValidator();
 
-            RuleFor(model => model.LastName)
-                .NotEmpty().WithMessage(ValidationMessages.PropertyIsRequired)
-                .MaximumLength(50).WithMessage(ValidationMessages.MaximumLengthExceeded)
-                .Matches(ValidationRegexes.LastName).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.LastName);
+            RuleFor(model => model.LastName).NameValidator();
 
-            RuleFor(model => model.EmailAddress)
-                .NotEmpty().WithMessage(ValidationMessages.PropertyIsRequired)
-                .MaximumLength(100).WithMessage(ValidationMessages.MaximumLengthExceeded)
-                .Matches(ValidationRegexes.EmailAddress).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.EmailAddress);
+            RuleFor(model => model.EmailAddress).EmailValidator();
 
             RuleFor(model => model.PhoneNumber).PhoneNumberValidator();
 
-            RuleFor(model => model.RelativeAddress)
-                .NotEmpty().WithMessage(ValidationMessages.PropertyIsRequired)
-                .MaximumLength(100).WithMessage(ValidationMessages.MaximumLengthExceeded)
-                .Matches(ValidationRegexes.RelativeAddress).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.RelativeAddress);
+            RuleFor(model => model.RelativeAddress).AddressValidator();
 
             RuleFor(model => model.OnboardedBy).AdminIdValidator();
         }

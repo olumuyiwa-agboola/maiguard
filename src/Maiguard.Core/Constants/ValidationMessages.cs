@@ -38,16 +38,20 @@ namespace Maiguard.Core.Constants
         
         /// <summary>
         /// </summary>
-        public const string OnboardedBy = @"^(SELF|A[A-Z]{5}\d{6,})$";
-        
+        public const string AdminId = @"^(SELF|A[A-Z]{5}\d{6,})$";
+
         /// <summary>
         /// </summary>
-        public const string PhoneNumber = @"^\+234\d{10,}$";
-        
+        public const string ResidentId = @"^R[A-Z]{5}\d{6,}$";
+
         /// <summary>
         /// </summary>
         public const string CommunityId = @"^C\d{6}[A-Z]+$";
-        
+
+        /// <summary>
+        /// </summary>
+        public const string PhoneNumber = @"^\+234\d{10,}$";
+
         /// <summary>
         /// </summary>
         public const string FirstName = @"^[A-Za-z]+$";

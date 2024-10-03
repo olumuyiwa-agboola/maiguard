@@ -3,12 +3,31 @@ using Maiguard.Core.Models.Residents;
 
 namespace Maiguard.Core.Abstractions.IServices
 {
+    /// <summary>
+    /// Defines the contract for the methods that will execute 
+    /// the business logic concerning the accounts of residents
+    /// </summary>
     public interface IResidentService
     {
-        public Task<ApiResponseWithStatusCode> SignUpResident(NewResident newResident);
+        /// <summary>
+        /// Executes the business logic for registering a new resident
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>ApiResponseWithStatusCode</returns>
+        public Task<ApiResponseWithStatusCode> RegisterResident(ResidentRegistrationRequest request);
 
-        public Task<string> ActivateResident(NewResident newResident);
+        /// <summary>
+        /// Executes the business logic for activating a resident
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>ApiResponseWithStatusCode</returns>
+        public ApiResponseWithStatusCode ActivateResident(ResidentActivationRequest request);
 
-        public Task<string> DeactivateResident(NewResident newResident);
+        /// <summary>
+        /// Executes the business logic for deactivating a resident
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>ApiResponseWithStatusCode</returns>
+        public ApiResponseWithStatusCode DeactivateResident(ResidentDeactivationRequest request);
     }
 }

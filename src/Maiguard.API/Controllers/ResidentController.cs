@@ -10,31 +10,15 @@ namespace Maiguard.API.Controllers
     [ApiController]
     public class ResidentController(IResidentService residentService) : ControllerBase
     {
-        private static readonly string _message = "Feature not available";
-        private static readonly string _data = "This feature is yet to be implemented. Contributions to " +
-            "the development of this feature are welcome at https://github.com/olumuyiwa-agboola/maiguard-api";
-
-        private static readonly ApiResponse _defaultResponse = new()
-        {
-            Message = _message,
-            Data = _data
-        };
-
-        private readonly ApiResponseWithStatusCode _defaultResponseWithStatusCode = new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            ApiResponse = _defaultResponse
-        };
-
         [HttpPost]
         [Route("SignUp")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SignUpResident(NewResident newResident)
+        public async Task<IActionResult> SignUpResident(ResidentRegistrationRequest request)
         {
-            var response = await residentService.SignUpResident(newResident);
+            var response = await residentService.RegisterResident(request);
             return StatusCode(response.StatusCode, response.ApiResponse);
         }
 
@@ -44,10 +28,10 @@ namespace Maiguard.API.Controllers
         [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> ActivateResident(NewResident newResident)
+        public IActionResult ActivateResident(ResidentActivationRequest request)
         {
-            var response = await residentService.ActivateResident(newResident);
-            return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
+            var response = residentService.ActivateResident(request);
+            return StatusCode(response.StatusCode, response.ApiResponse);
         }
 
         [HttpPost]
@@ -56,10 +40,10 @@ namespace Maiguard.API.Controllers
         [ProducesResponseType(typeof(ModelValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeactivateResident(NewResident newResident)
+        public IActionResult DeactivateResident(ResidentDeactivationRequest request)
         {
-            var response = await residentService.DeactivateResident(newResident);
-            return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
+            var response = residentService.DeactivateResident(request);
+            return StatusCode(response.StatusCode, response.ApiResponse);
         }
     }
 }

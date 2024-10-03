@@ -3,7 +3,7 @@
     /// <summary>
     /// Model for creating a new resident account
     /// </summary>
-    public class NewResident
+    public class ResidentRegistrationRequest
     {
         /// <summary>
         /// Community Id

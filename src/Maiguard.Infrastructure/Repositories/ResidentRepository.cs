@@ -14,21 +14,31 @@ namespace Maiguard.Infrastructure.Repositories
 {
     public class ResidentRepository(IDbContext _dbContext) : IResidentRepository
     {
-        public int InsertNewResident(NewResident newResident, string residentId)
+        public int ActivateResident(ResidentActivationRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeactivateResident(ResidentDeactivationRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int AddResident(ResidentRegistrationRequest request, string residentId)
         {
             int result = 0;
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("ResidentId", residentId);
-            parameters.Add("LastName", newResident.LastName);
-            parameters.Add("FirstName", newResident.FirstName);
-            parameters.Add("PhoneNumber", newResident.PhoneNumber);
-            parameters.Add("OnboardedBy", newResident.OnboardedBy);
-            parameters.Add("CommunityId", newResident.CommunityId);
-            parameters.Add("EmailAddress", newResident.EmailAddress);
-            parameters.Add("RelativeAddress", newResident.RelativeAddress);
-            parameters.Add("RecordLastUpdatedBy", newResident.OnboardedBy);
-            parameters.Add("IsActiveLastUpdatedBy", newResident.OnboardedBy);
+            parameters.Add("LastName", request.LastName);
+            parameters.Add("FirstName", request.FirstName);
+            parameters.Add("PhoneNumber", request.PhoneNumber);
+            parameters.Add("OnboardedBy", request.OnboardedBy);
+            parameters.Add("CommunityId", request.CommunityId);
+            parameters.Add("EmailAddress", request.EmailAddress);
+            parameters.Add("RelativeAddress", request.RelativeAddress);
+            parameters.Add("RecordLastUpdatedBy", request.OnboardedBy);
+            parameters.Add("IsActiveLastUpdatedBy", request.OnboardedBy);
 
             string newResidentInsertStatement = @"
                             IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE ResidentId = @ResidentId)

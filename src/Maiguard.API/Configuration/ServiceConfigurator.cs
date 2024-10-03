@@ -8,6 +8,8 @@ using Maiguard.Infrastructure.Repositories;
 using Maiguard.Infrastructure;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Maiguard.Core.Factories;
+using Maiguard.Core.Abstractions.IFactories;
 
 namespace Maiguard.API.Configuration
 {
@@ -15,16 +17,21 @@ namespace Maiguard.API.Configuration
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            #region Controller and routing configuration
+            #region Controller, HTTP and routing configuration
             services.AddControllers();
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
             });
+            services.AddHttpContextAccessor();
             #endregion
 
             #region Services
             services.AddScoped<IResidentService, ResidentService>();
+            #endregion
+
+            #region Factories
+            services.AddScoped<IApiResponseFactory, ApiResponseFactory>();
             #endregion
 
             #region Repositories
@@ -32,8 +39,8 @@ namespace Maiguard.API.Configuration
             services.AddScoped<IResidentRepository, ResidentRepository>();
             #endregion
 
-            #region Fluent validators
-            services.AddScoped<IValidator<NewResident>, NewResidentValidator>();
+            #region Validators
+            services.AddScoped<IValidator<ResidentRegistrationRequest>, ResidentRegistrationRequestValidator>();
             #endregion
 
             #region Swagger configuration

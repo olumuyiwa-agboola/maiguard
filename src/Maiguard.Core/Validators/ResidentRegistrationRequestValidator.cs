@@ -4,14 +4,15 @@ using Maiguard.Core.Models.Residents;
 
 namespace Maiguard.Core.Validators
 {
-    public class NewResidentValidator : AbstractValidator<NewResident>
+    /// <summary>
+    /// </summary>
+    public class ResidentRegistrationRequestValidator : AbstractValidator<ResidentRegistrationRequest>
     {
-        public NewResidentValidator()
+        /// <summary>
+        /// </summary>
+        public ResidentRegistrationRequestValidator()
         {
-            RuleFor(model => model.CommunityId)
-                .NotEmpty().WithMessage(ValidationMessages.PropertyIsRequired)
-                .MaximumLength(12).WithMessage(ValidationMessages.MaximumLengthExceeded)
-                .Matches(ValidationRegexes.CommunityId).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.CommunityId);
+            RuleFor(model => model.CommunityId).CommunityIdValidator();
 
             RuleFor(model => model.FirstName)
                 .NotEmpty().WithMessage(ValidationMessages.PropertyIsRequired)
@@ -28,20 +29,14 @@ namespace Maiguard.Core.Validators
                 .MaximumLength(100).WithMessage(ValidationMessages.MaximumLengthExceeded)
                 .Matches(ValidationRegexes.EmailAddress).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.EmailAddress);
 
-            RuleFor(model => model.PhoneNumber)
-                .NotEmpty().WithMessage(ValidationMessages.PropertyIsRequired)
-                .MaximumLength(14).WithMessage(ValidationMessages.MaximumLengthExceeded)
-                .Matches(ValidationRegexes.PhoneNumber).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.PhoneNumber);
+            RuleFor(model => model.PhoneNumber).PhoneNumberValidator();
 
             RuleFor(model => model.RelativeAddress)
                 .NotEmpty().WithMessage(ValidationMessages.PropertyIsRequired)
                 .MaximumLength(100).WithMessage(ValidationMessages.MaximumLengthExceeded)
                 .Matches(ValidationRegexes.RelativeAddress).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.RelativeAddress);
 
-            RuleFor(model => model.OnboardedBy)
-                .NotEmpty().WithMessage(ValidationMessages.PropertyIsRequired)
-                .MaximumLength(14).WithMessage(ValidationMessages.MaximumLengthExceeded)
-                .Matches(ValidationRegexes.OnboardedBy).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.OnboardedBy);
+            RuleFor(model => model.OnboardedBy).AdminIdValidator();
         }
     }
 }

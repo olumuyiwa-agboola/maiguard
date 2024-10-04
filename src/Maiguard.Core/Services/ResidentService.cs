@@ -27,36 +27,86 @@ namespace Maiguard.Core.Services
         private readonly IResidentRepository _residentRepository;
         private readonly IApiResponseFactory _apiResponseFactory;
         private readonly IValidator<ResidentRegistrationRequest> _residentRegistrationRequestValidator;
+        private readonly IValidator<ResidentActivationRequest> _residentActivationRequestValidator;
+        private readonly IValidator<ResidentDeactivationRequest> _residentDeactivationRequestValidator;
 
         /// <summary>
         /// </summary>
         /// <param name="residentRepository"></param>
         /// <param name="apiResponseFactory"></param>
         /// <param name="residentRegistrationRequestValidator"></param>
-        public ResidentService(IResidentRepository residentRepository, IApiResponseFactory apiResponseFactory,
-        IValidator<ResidentRegistrationRequest> residentRegistrationRequestValidator)
+        /// <param name="residentActivationRequestValidator"></param>
+        /// <param name="residentDeactivationRequestValidator"></param>
+        public ResidentService(IResidentRepository residentRepository, IApiResponseFactory apiResponseFactory, IValidator<ResidentRegistrationRequest> residentRegistrationRequestValidator, 
+            IValidator<ResidentActivationRequest> residentActivationRequestValidator, IValidator<ResidentDeactivationRequest> residentDeactivationRequestValidator)
         {
             _residentRepository = residentRepository;
             _apiResponseFactory = apiResponseFactory;
             _residentRegistrationRequestValidator = residentRegistrationRequestValidator;
+            _residentActivationRequestValidator = residentActivationRequestValidator;
+            _residentDeactivationRequestValidator = residentDeactivationRequestValidator;
         }
 
         /// <summary>
         /// </summary>
         /// <param name="request"></param>
         /// <returns>ApiResponseWithStatusCode</returns>
-        public ApiResponseWithStatusCode ActivateResident(ResidentActivationRequest request)
+        public async Task<ApiResponseWithStatusCode> ActivateResident(ResidentActivationRequest request)
         {
-            return _apiResponseFactory.FeatureNotImplemented();
+            var (isValid, errors) = await _residentActivationRequestValidator.ValidateModelAsync(request);
+
+            if (!isValid && errors != null)
+            {
+                return _apiResponseFactory.FailedValidation(errors);
+            }
+
+            int result = _residentRepository.ActivateResident(request);
+
+            switch (result)
+            {
+                case 4000:
+                    return _apiResponseFactory.DuplicateRecord("Resident has not been verified.");
+
+                case 5000:
+                    return _apiResponseFactory.DuplicateRecord("Resident is already active.");
+
+                case 1:
+                    return _apiResponseFactory.Success("Resident activation successful!", result);
+
+                default:
+                    return _apiResponseFactory.InternalServerError();
+            }
         }
 
         /// <summary>
         /// </summary>
         /// <param name="request"></param>
         /// <returns>ApiResponseWithStatusCode</returns>
-        public ApiResponseWithStatusCode DeactivateResident(ResidentDeactivationRequest request)
+        public async Task<ApiResponseWithStatusCode> DeactivateResident(ResidentDeactivationRequest request)
         {
-            return _apiResponseFactory.FeatureNotImplemented();
+            var (isValid, errors) = await _residentDeactivationRequestValidator.ValidateModelAsync(request);
+
+            if (!isValid && errors != null)
+            {
+                return _apiResponseFactory.FailedValidation(errors);
+            }
+
+            int result = _residentRepository.DeactivateResident(request);
+
+            switch (result)
+            {
+                case 4000:
+                    return _apiResponseFactory.DuplicateRecord("Resident has not been verified.");
+
+                case 5000:
+                    return _apiResponseFactory.DuplicateRecord("Resident is already inactive.");
+
+                case 1:
+                    return _apiResponseFactory.Success("Resident deactivation successful!", request);
+
+                default:
+                    return _apiResponseFactory.InternalServerError();
+            }
         }
 
         /// <summary>

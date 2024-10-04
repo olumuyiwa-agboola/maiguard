@@ -16,12 +16,70 @@ namespace Maiguard.Infrastructure.Repositories
     {
         public int ActivateResident(ResidentActivationRequest request)
         {
-            throw new NotImplementedException();
+            int result = 0;
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("ResidentId", request.ResidentId);
+            parameters.Add("IsActiveLastUpdatedBy", request.ActivatedBy);
+
+            string query = @"
+                    IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE ResidentId = @ResidentId and IsVerified = 0)
+	                    BEGIN
+		                    SELECT 4000;  -- Return 4000 if the resident has not been verified
+	                    END
+                    ELSE IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE ResidentId = @ResidentId and IsActive = 1)
+	                    BEGIN
+		                    SELECT 5000;  -- Return 5000 if the resident is already active
+	                    END
+                    ELSE
+	                    BEGIN
+		                    UPDATE [Maiguard].[dbo].[Residents]
+		                    SET IsActive = 1
+		                    WHERE ResidentId = @ResidentId;
+
+		                    SELECT 1;
+	                END";
+
+            using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
+            {
+                result = dbConnection.Query<int>(query, parameters).FirstOrDefault();
+            }
+
+            return result;
         }
 
         public int DeactivateResident(ResidentDeactivationRequest request)
         {
-            throw new NotImplementedException();
+            int result = 0;
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("ResidentId", request.ResidentId);
+            parameters.Add("IsActiveLastUpdatedBy", request.DeactivatedBy);
+
+            string query = @"
+                    IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE ResidentId = @ResidentId and IsVerified = 0)
+	                    BEGIN
+		                    SELECT 4000;  -- Return 4000 if the resident has not been verified
+	                    END
+                    ELSE IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE ResidentId = @ResidentId and IsActive = 0)
+	                    BEGIN
+		                    SELECT 5000;  -- Return 5000 if the resident is already inactive
+	                    END
+                    ELSE
+	                    BEGIN
+		                    UPDATE [Maiguard].[dbo].[Residents]
+		                    SET IsActive = 0
+		                    WHERE ResidentId = @ResidentId;
+
+		                    SELECT 1;
+	                END";
+
+            using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
+            {
+                result = dbConnection.Query<int>(query, parameters).FirstOrDefault();
+            }
+
+            return result;
         }
 
         public int AddResident(ResidentRegistrationRequest request, string residentId)
@@ -40,7 +98,7 @@ namespace Maiguard.Infrastructure.Repositories
             parameters.Add("RecordLastUpdatedBy", request.OnboardedBy);
             parameters.Add("IsActiveLastUpdatedBy", request.OnboardedBy);
 
-            string newResidentInsertStatement = @"
+            string query = @"
                             IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE ResidentId = @ResidentId)
                                 BEGIN
                                     SELECT 1000;  -- Return 1000 if the resident Id already exists
@@ -63,7 +121,7 @@ namespace Maiguard.Infrastructure.Repositories
 
             using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
             {
-                result = dbConnection.Query<int>(newResidentInsertStatement, parameters).FirstOrDefault();
+                result = dbConnection.Query<int>(query, parameters).FirstOrDefault();
             }
 
             return result;

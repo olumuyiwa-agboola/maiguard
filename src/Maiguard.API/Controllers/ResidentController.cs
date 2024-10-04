@@ -11,7 +11,7 @@ namespace Maiguard.API.Controllers
     public class ResidentController(IResidentService residentService) : ControllerBase
     {
         [HttpPost]
-        [Route("SignUp")]
+        [Route("Register")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
@@ -28,9 +28,9 @@ namespace Maiguard.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public IActionResult ActivateResident(ResidentActivationRequest request)
+        public async Task<IActionResult> ActivateResident(ResidentActivationRequest request)
         {
-            var response = residentService.ActivateResident(request);
+            var response = await residentService.ActivateResident(request);
             return StatusCode(response.StatusCode, response.ApiResponse);
         }
 
@@ -40,9 +40,9 @@ namespace Maiguard.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public IActionResult DeactivateResident(ResidentDeactivationRequest request)
+        public async Task<IActionResult> DeactivateResident(ResidentDeactivationRequest request)
         {
-            var response = residentService.DeactivateResident(request);
+            var response = await residentService.DeactivateResident(request);
             return StatusCode(response.StatusCode, response.ApiResponse);
         }
     }

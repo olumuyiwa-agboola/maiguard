@@ -10,6 +10,6 @@
 
         /// <summary>
         /// </summary>
-        public string ActivatedBy { get; set; } = string.Empty;
+        public string DeactivatedBy { get; set; } = string.Empty;
     }
 }

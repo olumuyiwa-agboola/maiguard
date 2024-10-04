@@ -21,13 +21,13 @@ namespace Maiguard.Core.Abstractions.IServices
         /// </summary>
         /// <param name="request"></param>
         /// <returns>ApiResponseWithStatusCode</returns>
-        public ApiResponseWithStatusCode ActivateResident(ResidentActivationRequest request);
+        public Task<ApiResponseWithStatusCode> ActivateResident(ResidentActivationRequest request);
 
         /// <summary>
         /// Executes the business logic for deactivating a resident
         /// </summary>
         /// <param name="request"></param>
         /// <returns>ApiResponseWithStatusCode</returns>
-        public ApiResponseWithStatusCode DeactivateResident(ResidentDeactivationRequest request);
+        public Task<ApiResponseWithStatusCode> DeactivateResident(ResidentDeactivationRequest request);
     }
 }

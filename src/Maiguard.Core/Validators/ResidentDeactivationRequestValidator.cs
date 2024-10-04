@@ -12,7 +12,7 @@ namespace Maiguard.Core.Validators
         /// </summary>
         public ResidentDeactivationRequestValidator()
         {
-            RuleFor(model => model.ActivatedBy).AdminIdValidator();
+            RuleFor(model => model.DeactivatedBy).AdminIdValidator();
 
             RuleFor(model => model.ResidentId).ResidentIdValidator();
         }

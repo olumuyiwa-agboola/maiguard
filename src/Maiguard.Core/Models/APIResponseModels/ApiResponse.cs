@@ -1,5 +1,8 @@
 ﻿namespace Maiguard.Core.Models.APIResponseModels
 {
+    /// <summary>
+    /// Base model for successful responses
+    /// </summary>
     public record ApiResponse
     {
         /// <summary>
@@ -10,6 +13,6 @@
         /// <summary>
         /// API response data
         /// </summary>
-        public object? Data { get; set; }
+        public required object Data { get; set; }
     }
 }

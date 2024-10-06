@@ -74,7 +74,7 @@ namespace Maiguard.Core.Libraries
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(ValidationMessages.IsRequired)
-                .MaximumLength(12).WithMessage(ValidationMessages.MaximumLengthExceeded)
+                .MaximumLength(10).WithMessage(ValidationMessages.MaximumLengthExceeded)
                 .Matches(ValidationRegexes.ResidentId).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.ResidentId);
         }
 
@@ -100,7 +100,7 @@ namespace Maiguard.Core.Libraries
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(ValidationMessages.IsRequired)
-                .MaximumLength(12).WithMessage(ValidationMessages.MaximumLengthExceeded)
+                .MaximumLength(10).WithMessage(ValidationMessages.MaximumLengthExceeded)
                 .Matches(ValidationRegexes.AdminId).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.AdminId);
         }
     }

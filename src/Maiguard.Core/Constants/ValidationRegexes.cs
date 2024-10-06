@@ -14,11 +14,11 @@
         
         /// <summary>
         /// </summary>
-        public const string AdminId = @"^(SELF|A[A-Z]{5}\d{6,})$";
+        public const string AdminId = @"^(SELF|A[A-Z]{5}\d{2,})$";
 
         /// <summary>
         /// </summary>
-        public const string ResidentId = @"^R[A-Z]{5}\d{6,}$";
+        public const string ResidentId = @"^R[A-Z]{5}\d{4,}$";
 
         /// <summary>
         /// </summary>

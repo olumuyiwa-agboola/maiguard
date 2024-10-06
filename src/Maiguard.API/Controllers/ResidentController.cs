@@ -16,7 +16,7 @@ namespace Maiguard.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SignUpResident(ResidentRegistrationRequest request)
+        public async Task<IActionResult> RegisterResident(ResidentRegistrationRequest request)
         {
             var response = await residentService.RegisterResident(request);
             return StatusCode(response.StatusCode, response.ApiResponse);

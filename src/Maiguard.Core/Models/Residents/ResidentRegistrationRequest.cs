@@ -50,7 +50,7 @@
         /// <summary>
         /// Invitation code
         /// </summary>
-        /// <example>SELF</example>
+        /// <example>12345678</example>
         public string InvitationCode { get; set; } = string.Empty;
     }
 }

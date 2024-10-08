@@ -27,7 +27,16 @@ namespace Maiguard.Core.Validators
 
             RuleFor(model => model.OnboardedBy).AdminIdValidator();
 
-            RuleFor(model => model.InvitationCode).InvitationCodeValidator();
+            When(model => (model.OnboardedBy == "SELF"), () =>
+            {
+                RuleFor(model => model.InvitationCode).InvitationCodeValidator();
+            });
+
+            When(model => (model.OnboardedBy != "SELF"), () =>
+            {
+                RuleFor(model => model.InvitationCode).Null();
+            });
         }
+
     }
 }

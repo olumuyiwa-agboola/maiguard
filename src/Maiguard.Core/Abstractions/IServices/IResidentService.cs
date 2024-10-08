@@ -1,5 +1,6 @@
 ﻿using Maiguard.Core.Models.APIResponseModels;
 using Maiguard.Core.Models.Residents;
+using Maiguard.Core.Services;
 
 namespace Maiguard.Core.Abstractions.IServices
 {
@@ -29,5 +30,12 @@ namespace Maiguard.Core.Abstractions.IServices
         /// <param name="request"></param>
         /// <returns>ApiResponseWithStatusCode</returns>
         public Task<ApiResponseWithStatusCode> DeactivateResident(ResidentDeactivationRequest request);
+
+        /// <summary>
+        /// Executes the business logic for generating an invitation code for a resident
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>ApiResponseWithStatusCode</returns>
+        public Task<ApiResponseWithStatusCode> GenerateInvitationCode(InvitationCodeGenerationRequest request);
     }
 }

@@ -40,9 +40,10 @@ namespace Maiguard.API.Configuration
             #endregion
 
             #region Validators
-            services.AddScoped<IValidator<ResidentRegistrationRequest>, ResidentRegistrationRequestValidator>();
             services.AddScoped<IValidator<ResidentActivationRequest>, ResidentActivationRequestValidator>();
+            services.AddScoped<IValidator<ResidentRegistrationRequest>, ResidentRegistrationRequestValidator>();
             services.AddScoped<IValidator<ResidentDeactivationRequest>, ResidentDeactivationRequestValidator>();
+            services.AddScoped<IValidator<InvitationCodeGenerationRequest>, InvitationCodeGenerationRequestValidator>();
             #endregion
 
             #region Swagger configuration

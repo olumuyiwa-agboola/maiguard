@@ -26,8 +26,9 @@ namespace Maiguard.Core.Services
     {
         private readonly IResidentRepository _residentRepository;
         private readonly IApiResponseFactory _apiResponseFactory;
-        private readonly IValidator<ResidentRegistrationRequest> _residentRegistrationRequestValidator;
+        private readonly IValidator<InvitationCodeGenerationRequest> _invitationCodeGenerationValidator;
         private readonly IValidator<ResidentActivationRequest> _residentActivationRequestValidator;
+        private readonly IValidator<ResidentRegistrationRequest> _residentRegistrationRequestValidator;
         private readonly IValidator<ResidentDeactivationRequest> _residentDeactivationRequestValidator;
 
         /// <summary>
@@ -37,13 +38,16 @@ namespace Maiguard.Core.Services
         /// <param name="residentRegistrationRequestValidator"></param>
         /// <param name="residentActivationRequestValidator"></param>
         /// <param name="residentDeactivationRequestValidator"></param>
+        /// <param name="invitationCodeGenerationRequest"></param>
         public ResidentService(IResidentRepository residentRepository, IApiResponseFactory apiResponseFactory, IValidator<ResidentRegistrationRequest> residentRegistrationRequestValidator, 
-            IValidator<ResidentActivationRequest> residentActivationRequestValidator, IValidator<ResidentDeactivationRequest> residentDeactivationRequestValidator)
+            IValidator<ResidentActivationRequest> residentActivationRequestValidator, IValidator<ResidentDeactivationRequest> residentDeactivationRequestValidator, 
+            IValidator<InvitationCodeGenerationRequest> invitationCodeGenerationRequest)
         {
             _residentRepository = residentRepository;
             _apiResponseFactory = apiResponseFactory;
-            _residentRegistrationRequestValidator = residentRegistrationRequestValidator;
+            _invitationCodeGenerationValidator = invitationCodeGenerationRequest;
             _residentActivationRequestValidator = residentActivationRequestValidator;
+            _residentRegistrationRequestValidator = residentRegistrationRequestValidator;
             _residentDeactivationRequestValidator = residentDeactivationRequestValidator;
         }
 
@@ -107,6 +111,11 @@ namespace Maiguard.Core.Services
                 default:
                     return _apiResponseFactory.InternalServerError();
             }
+        }
+
+        public Task<ApiResponseWithStatusCode> GenerateInvitationCode(InvitationCodeGenerationRequest request)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

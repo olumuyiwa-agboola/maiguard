@@ -30,6 +30,10 @@
 
         /// <summary>
         /// </summary>
+        public const string InvitationCode = @"^[0-9]+$";
+
+        /// <summary>
+        /// </summary>
         public const string Name = @"^[A-Za-z]+$";
     }
 }

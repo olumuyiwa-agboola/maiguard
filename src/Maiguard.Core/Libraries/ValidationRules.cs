@@ -14,6 +14,7 @@ namespace Maiguard.Core.Libraries
     public static class ValidationRules
     {
         /// <summary>
+        /// Community Id validator
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="ruleBuilder"></param>
@@ -27,6 +28,7 @@ namespace Maiguard.Core.Libraries
         }
 
         /// <summary>
+        /// Name validator
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="ruleBuilder"></param>
@@ -40,6 +42,7 @@ namespace Maiguard.Core.Libraries
         }
 
         /// <summary>
+        /// Email validator
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="ruleBuilder"></param>
@@ -53,6 +56,7 @@ namespace Maiguard.Core.Libraries
         }
 
         /// <summary>
+        /// Address validator
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="ruleBuilder"></param>
@@ -66,6 +70,7 @@ namespace Maiguard.Core.Libraries
         }
 
         /// <summary>
+        /// Resident Id validator
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="ruleBuilder"></param>
@@ -79,6 +84,7 @@ namespace Maiguard.Core.Libraries
         }
 
         /// <summary>
+        /// Phone number validator
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="ruleBuilder"></param>
@@ -92,6 +98,7 @@ namespace Maiguard.Core.Libraries
         }
 
         /// <summary>
+        /// Admin Id validator
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="ruleBuilder"></param>
@@ -102,6 +109,20 @@ namespace Maiguard.Core.Libraries
                 .NotEmpty().WithMessage(ValidationMessages.IsRequired)
                 .MaximumLength(10).WithMessage(ValidationMessages.MaximumLengthExceeded)
                 .Matches(ValidationRegexes.AdminId).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.AdminId);
+        }
+
+        /// <summary>
+        /// Invidation code validator
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ruleBuilder"></param>
+        /// <returns></returns>
+        public static IRuleBuilderOptions<T, string> InvitationCodeValidator<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder
+                .NotEmpty().WithMessage(ValidationMessages.IsRequired)
+                .MaximumLength(8).WithMessage(ValidationMessages.MaximumLengthExceeded)
+                .Matches(ValidationRegexes.InvitationCode).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.InvitationCode);
         }
     }
 

@@ -46,5 +46,11 @@
         /// </summary>
         /// <example>SELF</example>
         public string OnboardedBy { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Invitation code
+        /// </summary>
+        /// <example>SELF</example>
+        public string InvitationCode { get; set; } = string.Empty;
     }
 }

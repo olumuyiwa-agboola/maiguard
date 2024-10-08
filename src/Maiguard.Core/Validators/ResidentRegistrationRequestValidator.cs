@@ -26,6 +26,8 @@ namespace Maiguard.Core.Validators
             RuleFor(model => model.RelativeAddress).AddressValidator();
 
             RuleFor(model => model.OnboardedBy).AdminIdValidator();
+
+            RuleFor(model => model.InvitationCode).InvitationCodeValidator();
         }
     }
 }

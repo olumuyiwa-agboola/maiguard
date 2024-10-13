@@ -1,4 +1,8 @@
-﻿using Maiguard.Core.Models.APIResponseModels;
+﻿using Azure.Core;
+using Maiguard.Core.Abstractions.IFactories;
+using Maiguard.Core.Abstractions.IServices;
+using Maiguard.Core.Models.AccessCodes;
+using Maiguard.Core.Models.APIResponseModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Maiguard.API.Controllers
@@ -7,21 +11,12 @@ namespace Maiguard.API.Controllers
     [ApiController]
     public class AccessCodeController : ControllerBase
     {
-        private static readonly string _message = "Feature not available";
-        private static readonly string _data = "This feature is yet to be implemented. Contributions to " +
-            "the development of this feature are welcome at https://github.com/olumuyiwa-agboola/maiguard-api";
+        private readonly IAccessCodeService _accessCodeService;
 
-        private static readonly ApiResponse _defaultResponse = new()
+        public AccessCodeController(IAccessCodeService accessCodeService)
         {
-            Message = _message,
-            Data = _data
-        };
-
-        private readonly ApiResponseWithStatusCode _defaultResponseWithStatusCode = new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            ApiResponse = _defaultResponse
-        };
+            _accessCodeService = accessCodeService;
+        }
 
         [HttpPost]
         [Route("Generate")]
@@ -29,9 +24,10 @@ namespace Maiguard.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public IActionResult GenerateAccessCode()
+        public async Task<IActionResult> GenerateAccessCode(AccessCodeGenerationRequest request)
         {
-            return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
+            var response = await _accessCodeService.GenerateAccessCode(request);
+            return StatusCode(response.StatusCode, response.ApiResponse);
         }
 
         [HttpPost]
@@ -40,9 +36,10 @@ namespace Maiguard.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public IActionResult VerifyAccessCode()
+        public async Task<IActionResult> VerifyAccessCode(AccessCodeVerificationRequest request)
         {
-            return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
+            var response = await _accessCodeService.VerifyAccessCode(request);
+            return StatusCode(response.StatusCode, response.ApiResponse);
         }
 
         [HttpDelete]
@@ -51,9 +48,10 @@ namespace Maiguard.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public IActionResult CancelAccessCode()
+        public async Task<IActionResult> CancelAccessCode(AccessCodeCancellationRequest request)
         {
-            return StatusCode(_defaultResponseWithStatusCode.StatusCode, _defaultResponseWithStatusCode.ApiResponse);
+            var response = await _accessCodeService.CancelAccessCode(request);
+            return StatusCode(response.StatusCode, response.ApiResponse);
         }
     }
 }

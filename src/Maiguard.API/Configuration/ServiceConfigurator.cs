@@ -33,6 +33,7 @@ namespace Maiguard.API.Configuration
 
             #region Services
             services.AddScoped<IResidentService, ResidentService>();
+            services.AddScoped<IAccessCodeService, AccessCodeService>();
             #endregion
 
             #region Factories

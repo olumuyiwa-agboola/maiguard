@@ -85,11 +85,10 @@ namespace Maiguard.Core.Services
         /// <summary>
         /// </summary>
         /// <param name="request"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public Task<ApiResponseWithStatusCode> GenerateInvitationCode(InvitationCodeGenerationRequest request)
+        /// <returns>ApiResponseWithStatusCode</returns>
+        public async Task<ApiResponseWithStatusCode> GenerateInvitationCode(InvitationCodeGenerationRequest request)
         {
-            throw new NotImplementedException();
+            return _apiResponseFactory.FeatureNotImplemented();
         }
 
         /// <summary>

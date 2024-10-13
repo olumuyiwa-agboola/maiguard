@@ -1,14 +1,7 @@
 ﻿using Dapper;
 using Maiguard.Core.Abstractions.IRepositories;
 using Maiguard.Core.Models.Residents;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Maiguard.Infrastructure.Repositories
 {

@@ -14,7 +14,7 @@ namespace Maiguard.Core.Models.Residents
         /// <summary>
         /// Community Id
         /// </summary>
-        /// <example>RFHADI5188</example>
+        /// <example>C123456FHADI</example>
         public string CommunityId { get; set; } = string.Empty;
 
         /// <summary>

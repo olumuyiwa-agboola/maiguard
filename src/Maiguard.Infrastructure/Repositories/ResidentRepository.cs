@@ -14,9 +14,9 @@ namespace Maiguard.Infrastructure.Repositories
 {
     public class ResidentRepository(IDbContext _dbContext) : IResidentRepository
     {
-        public int ActivateResident(ResidentActivationRequest request)
+        public async Task<int> ActivateResident(ResidentActivationRequest request)
         {
-            int result = 0;
+            IEnumerable<int> result;
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("ResidentId", request.ResidentId);
@@ -42,15 +42,15 @@ namespace Maiguard.Infrastructure.Repositories
 
             using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
             {
-                result = dbConnection.Query<int>(query, parameters).FirstOrDefault();
+                result = await dbConnection.QueryAsync<int>(query, parameters);
             }
 
-            return result;
+            return result.FirstOrDefault();
         }
 
-        public int DeactivateResident(ResidentDeactivationRequest request)
+        public async Task<int> DeactivateResident(ResidentDeactivationRequest request)
         {
-            int result = 0;
+            IEnumerable<int> result;
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("ResidentId", request.ResidentId);
@@ -76,15 +76,15 @@ namespace Maiguard.Infrastructure.Repositories
 
             using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
             {
-                result = dbConnection.Query<int>(query, parameters).FirstOrDefault();
+                result = await dbConnection.QueryAsync<int>(query, parameters);
             }
 
-            return result;
+            return result.FirstOrDefault();
         }
 
-        public int AddResident(ResidentRegistrationRequest request, string residentId)
+        public async Task<int> AddResident(ResidentRegistrationRequest request, string residentId)
         {
-            int result = 0;
+            IEnumerable<int> result;
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("ResidentId", residentId);
@@ -121,10 +121,10 @@ namespace Maiguard.Infrastructure.Repositories
 
             using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
             {
-                result = dbConnection.Query<int>(query, parameters).FirstOrDefault();
+                result = await dbConnection.QueryAsync<int>(query, parameters);
             }
 
-            return result;
+            return result.FirstOrDefault();
         }
     }
 }

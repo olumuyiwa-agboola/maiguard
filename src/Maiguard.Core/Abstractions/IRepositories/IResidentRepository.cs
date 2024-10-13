@@ -20,20 +20,20 @@ namespace Maiguard.Core.Abstractions.IRepositories
         /// <param name="request"></param>
         /// <param name="residentId"></param>
         /// <returns>int</returns>
-        public int AddResident(ResidentRegistrationRequest request, string residentId);
+        public Task<int> AddResident(ResidentRegistrationRequest request, string residentId);
 
         /// <summary>
         /// Executes the data access and persistence logic for acitvating a resident's account
         /// </summary>
         /// <param name="request"></param>
         /// <returns>int</returns>
-        public int ActivateResident(ResidentActivationRequest request);
+        public Task<int> ActivateResident(ResidentActivationRequest request);
 
         /// <summary>
         /// Executes the data access and persistence logic for deacitvating a resident's account
         /// </summary>
         /// <param name="request"></param>
         /// <returns>int</returns>
-        public int DeactivateResident(ResidentDeactivationRequest request);
+        public Task<int> DeactivateResident(ResidentDeactivationRequest request);
     }
 }

@@ -40,7 +40,7 @@ namespace Maiguard.Core.Services
         /// <returns>ApiResponseWithStatusCode</returns>
         public async Task<ApiResponseWithStatusCode> ActivateResident(ResidentActivationRequest request)
         {
-            int result = _residentRepository.ActivateResident(request);
+            int result = await _residentRepository.ActivateResident(request);
 
             switch (result)
             {
@@ -64,7 +64,7 @@ namespace Maiguard.Core.Services
         /// <returns>ApiResponseWithStatusCode</returns>
         public async Task<ApiResponseWithStatusCode> DeactivateResident(ResidentDeactivationRequest request)
         {
-            int result = _residentRepository.DeactivateResident(request);
+            int result = await _residentRepository.DeactivateResident(request);
 
             switch (result)
             {
@@ -101,12 +101,12 @@ namespace Maiguard.Core.Services
             string communityId = newResident.CommunityId;
             string residentId = ResidentUtilities.GenerateResidentId(communityId);
 
-            int result = _residentRepository.AddResident(newResident, residentId);
+            int result = await _residentRepository.AddResident(newResident, residentId);
 
             while (result == 1000)
             {
                 residentId = ResidentUtilities.GenerateResidentId(communityId);
-                result = _residentRepository.AddResident(newResident, residentId);
+                result = await _residentRepository.AddResident(newResident, residentId);
             }
 
             switch (result)

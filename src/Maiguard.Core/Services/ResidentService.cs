@@ -4,7 +4,6 @@ using Maiguard.Core.Abstractions.IFactories;
 using Maiguard.Core.Abstractions.IRepositories;
 using Maiguard.Core.Abstractions.IServices;
 using Maiguard.Core.Factories;
-using Maiguard.Core.Handlers;
 using Maiguard.Core.Models.APIResponseModels;
 using Maiguard.Core.Models.Residents;
 using Maiguard.Core.Utilities;

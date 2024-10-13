@@ -20,35 +20,19 @@ namespace Maiguard.Core.Services
 {
     /// <summary>
     /// </summary>
-    /// <param name="_residentRepository"></param>
-    /// <param name="_newResidentValidator"></param>
     public class ResidentService : IResidentService
     {
         private readonly IResidentRepository _residentRepository;
         private readonly IApiResponseFactory _apiResponseFactory;
-        private readonly IValidator<InvitationCodeGenerationRequest> _invitationCodeGenerationValidator;
-        private readonly IValidator<ResidentActivationRequest> _residentActivationRequestValidator;
-        private readonly IValidator<ResidentRegistrationRequest> _residentRegistrationRequestValidator;
-        private readonly IValidator<ResidentDeactivationRequest> _residentDeactivationRequestValidator;
 
         /// <summary>
         /// </summary>
         /// <param name="residentRepository"></param>
         /// <param name="apiResponseFactory"></param>
-        /// <param name="residentRegistrationRequestValidator"></param>
-        /// <param name="residentActivationRequestValidator"></param>
-        /// <param name="residentDeactivationRequestValidator"></param>
-        /// <param name="invitationCodeGenerationRequest"></param>
-        public ResidentService(IResidentRepository residentRepository, IApiResponseFactory apiResponseFactory, IValidator<ResidentRegistrationRequest> residentRegistrationRequestValidator, 
-            IValidator<ResidentActivationRequest> residentActivationRequestValidator, IValidator<ResidentDeactivationRequest> residentDeactivationRequestValidator, 
-            IValidator<InvitationCodeGenerationRequest> invitationCodeGenerationRequest)
+        public ResidentService(IResidentRepository residentRepository, IApiResponseFactory apiResponseFactory)
         {
             _residentRepository = residentRepository;
             _apiResponseFactory = apiResponseFactory;
-            _invitationCodeGenerationValidator = invitationCodeGenerationRequest;
-            _residentActivationRequestValidator = residentActivationRequestValidator;
-            _residentRegistrationRequestValidator = residentRegistrationRequestValidator;
-            _residentDeactivationRequestValidator = residentDeactivationRequestValidator;
         }
 
         /// <summary>
@@ -57,13 +41,6 @@ namespace Maiguard.Core.Services
         /// <returns>ApiResponseWithStatusCode</returns>
         public async Task<ApiResponseWithStatusCode> ActivateResident(ResidentActivationRequest request)
         {
-            var (isValid, errors) = await _residentActivationRequestValidator.ValidateModelAsync(request);
-
-            if (!isValid && errors != null)
-            {
-                return _apiResponseFactory.FailedValidation(errors);
-            }
-
             int result = _residentRepository.ActivateResident(request);
 
             switch (result)
@@ -88,13 +65,6 @@ namespace Maiguard.Core.Services
         /// <returns>ApiResponseWithStatusCode</returns>
         public async Task<ApiResponseWithStatusCode> DeactivateResident(ResidentDeactivationRequest request)
         {
-            var (isValid, errors) = await _residentDeactivationRequestValidator.ValidateModelAsync(request);
-
-            if (!isValid && errors != null)
-            {
-                return _apiResponseFactory.FailedValidation(errors);
-            }
-
             int result = _residentRepository.DeactivateResident(request);
 
             switch (result)
@@ -113,6 +83,11 @@ namespace Maiguard.Core.Services
             }
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public Task<ApiResponseWithStatusCode> GenerateInvitationCode(InvitationCodeGenerationRequest request)
         {
             throw new NotImplementedException();
@@ -124,13 +99,6 @@ namespace Maiguard.Core.Services
         /// <returns>ApiResponseWithStatusCode</returns>
         public async Task<ApiResponseWithStatusCode> RegisterResident(ResidentRegistrationRequest newResident)
         {
-            var (isValid, errors) = await _residentRegistrationRequestValidator.ValidateModelAsync(newResident);
-
-            if (!isValid && errors != null)
-            {
-                return _apiResponseFactory.FailedValidation(errors);
-            }
-
             string communityId = newResident.CommunityId;
             string residentId = ResidentUtilities.GenerateResidentId(communityId);
 

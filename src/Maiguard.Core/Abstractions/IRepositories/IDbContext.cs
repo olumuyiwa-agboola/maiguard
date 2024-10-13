@@ -7,8 +7,13 @@ using System.Threading.Tasks;
 
 namespace Maiguard.Core.Abstractions.IRepositories
 {
+    /// <summary>
+    /// </summary>
     public interface IDbContext
     {
+        /// <summary>
+        /// </summary>
+        /// <returns>IDbConnection</returns>
         public IDbConnection MaiguardDbConnection();
     }
 }

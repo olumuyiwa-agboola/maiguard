@@ -1,5 +1,7 @@
 ﻿namespace Maiguard.Core.Models.APIResponseModels
 {
+    /// <summary>
+    /// </summary>
     public class ApiResponseWithStatusCode
     {
         /// <summary>

@@ -10,6 +10,7 @@ using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Maiguard.Core.Factories;
 using Maiguard.Core.Abstractions.IFactories;
+using Maiguard.Core.Attributes;
 
 namespace Maiguard.API.Configuration
 {
@@ -18,7 +19,11 @@ namespace Maiguard.API.Configuration
         public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
             #region Controller, HTTP and routing configuration
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<ValidateModelAttribute>();
+            });
+
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
@@ -40,10 +45,7 @@ namespace Maiguard.API.Configuration
             #endregion
 
             #region Validators
-            services.AddScoped<IValidator<ResidentActivationRequest>, ResidentActivationRequestValidator>();
-            services.AddScoped<IValidator<ResidentRegistrationRequest>, ResidentRegistrationRequestValidator>();
-            services.AddScoped<IValidator<ResidentDeactivationRequest>, ResidentDeactivationRequestValidator>();
-            services.AddScoped<IValidator<InvitationCodeGenerationRequest>, InvitationCodeGenerationRequestValidator>();
+            services.AddValidatorsFromAssemblyContaining<ResidentRegistrationRequestValidator>();
             #endregion
 
             #region Swagger configuration

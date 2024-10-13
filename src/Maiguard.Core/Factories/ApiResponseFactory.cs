@@ -43,7 +43,7 @@ namespace Maiguard.Core.Factories
                 ApiResponse = new ApiResponse()
                 {
                     Message = message,
-                    Data = data
+                    Data = data ?? ""
                 }
             };
         }
@@ -123,7 +123,6 @@ namespace Maiguard.Core.Factories
         /// <summary>
         /// Builds and returns an API response that indicates that the requested feature has not yet been implemented
         /// </summary>
-        /// <param name="message">Message to be returned as the ProblemDetail title</param>
         /// <returns>ApiResponseWithStatusCode</returns>
         public ApiResponseWithStatusCode FeatureNotImplemented()
         {

@@ -1,4 +1,5 @@
 ﻿using Maiguard.Core.Abstractions.IServices;
+using Maiguard.Core.Attributes;
 using Maiguard.Core.Models.APIResponseModels;
 using Maiguard.Core.Models.Residents;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ namespace Maiguard.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [ValidateModel]
     public class ResidentController(IResidentService residentService) : ControllerBase
     {
         [HttpPost]

@@ -9,6 +9,7 @@ using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Maiguard.Core.Factories;
 using Maiguard.Core.Abstractions.IFactories;
 using Maiguard.Core.Attributes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Maiguard.API.Configuration
 {
@@ -45,6 +46,14 @@ namespace Maiguard.API.Configuration
 
             #region Validators
             services.AddValidatorsFromAssemblyContaining<ResidentRegistrationRequestValidator>();
+            #endregion
+
+            #region Cache
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration.GetConnectionString("Redis");
+                options.InstanceName = "Maiguard_";
+            });
             #endregion
 
             #region Swagger configuration

@@ -1,17 +1,8 @@
-﻿using FluentValidation;
-using Maiguard.Core.Abstractions.IFactories;
-using Maiguard.Core.Abstractions.IRepositories;
+﻿using Maiguard.Core.Abstractions.IFactories;
 using Maiguard.Core.Models.APIResponseModels;
-using Maiguard.Core.Models.Residents;
-using Maiguard.Core.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Maiguard.Core.Factories
 {

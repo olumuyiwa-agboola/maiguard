@@ -1,12 +1,10 @@
 ﻿using FluentValidation;
 using Maiguard.Core.Abstractions.IRepositories;
 using Maiguard.Core.Abstractions.IServices;
-using Maiguard.Core.Models.Residents;
 using Maiguard.Core.Validators;
 using Maiguard.Core.Services;
 using Maiguard.Infrastructure.Repositories;
 using Maiguard.Infrastructure;
-using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Maiguard.Core.Factories;
 using Maiguard.Core.Abstractions.IFactories;

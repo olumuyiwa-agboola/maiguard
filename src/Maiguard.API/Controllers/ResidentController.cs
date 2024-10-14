@@ -2,7 +2,6 @@
 using Maiguard.Core.Attributes;
 using Maiguard.Core.Models.APIResponseModels;
 using Maiguard.Core.Models.Residents;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Maiguard.API.Controllers

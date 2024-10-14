@@ -22,7 +22,7 @@
 
         /// <summary>
         /// </summary>
-        AdminIdNotValidForCommunityId,
+        AdminIdNotValidForCommunity,
 
         /// <summary>
         /// </summary>
@@ -30,6 +30,10 @@
 
         /// <summary>
         /// </summary>
-        ResidentAlreadyActive
+        ResidentAlreadyActive,
+
+        /// <summary>
+        /// </summary>
+        ResidentAlreadyInactive
     }
 }

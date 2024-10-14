@@ -31,14 +31,26 @@ namespace Maiguard.Core.Factories
         {
             switch (dbResponse)
             {
+                case (int)DbResponses.PhoneNumberAlreadyExists:
+                    return DuplicateRecord("Phone number already exists.");
+
+                case (int)DbResponses.EmailAlreadyExists:
+                    return DuplicateRecord("Email already exists.");
+
+                case (int)DbResponses.AdminIdNotValidForCommunity:
+                    return DuplicateRecord("AdminId not valid for community.");
+
                 case (int)DbResponses.ResidentNotVerified:
                     return DuplicateRecord("Resident has not been verified.");
 
                 case (int)DbResponses.ResidentAlreadyActive:
                     return DuplicateRecord("Resident is already active.");
 
+                case (int)DbResponses.ResidentAlreadyInactive:
+                    return DuplicateRecord("Resident is already inactive.");
+
                 case (int)DbResponses.Success:
-                    return Success("Resident activation successful!", data);
+                    return Success("Success", data);
 
                 default:
                     return InternalServerError();

@@ -35,5 +35,13 @@ namespace Maiguard.Core.Abstractions.IRepositories
         /// <param name="request"></param>
         /// <returns>int</returns>
         public Task<int> DeactivateResident(ResidentDeactivationRequest request);
+
+        /// <summary>
+        /// Executes the data access logic for validating
+        /// a community admin and a potential resident
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>int</returns>
+        public Task<int> ValidateAdminIdAndResidentEmail(InvitationCodeGenerationRequest request);
     }
 }

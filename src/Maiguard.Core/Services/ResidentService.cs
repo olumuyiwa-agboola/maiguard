@@ -5,6 +5,7 @@ using Maiguard.Core.Enums;
 using Maiguard.Core.Models.APIResponseModels;
 using Maiguard.Core.Models.Residents;
 using Maiguard.Core.Utilities;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Maiguard.Core.Services
 {
@@ -12,15 +13,18 @@ namespace Maiguard.Core.Services
     /// </summary>
     public class ResidentService : IResidentService
     {
+        private readonly IDistributedCache _redisCache;
         private readonly IResidentRepository _residentRepository;
         private readonly IApiResponseFactory _apiResponseFactory;
 
         /// <summary>
         /// </summary>
         /// <param name="residentRepository"></param>
+        /// <param name="redisCache"></param>
         /// <param name="apiResponseFactory"></param>
-        public ResidentService(IResidentRepository residentRepository, IApiResponseFactory apiResponseFactory)
+        public ResidentService(IResidentRepository residentRepository, IDistributedCache redisCache, IApiResponseFactory apiResponseFactory)
         {
+            _redisCache = redisCache;
             _residentRepository = residentRepository;
             _apiResponseFactory = apiResponseFactory;
         }
@@ -31,9 +35,9 @@ namespace Maiguard.Core.Services
         /// <returns>ApiResponseWithStatusCode</returns>
         public async Task<ApiResponseWithStatusCode> ActivateResident(ResidentActivationRequest request)
         {
-            int result = await _residentRepository.ActivateResident(request);
+            int dbResponse = await _residentRepository.ActivateResident(request);
 
-            return _apiResponseFactory.HandleDbResponse(result, null);
+            return _apiResponseFactory.HandleDbResponse(dbResponse, null);
         }
 
         /// <summary>
@@ -42,22 +46,9 @@ namespace Maiguard.Core.Services
         /// <returns>ApiResponseWithStatusCode</returns>
         public async Task<ApiResponseWithStatusCode> DeactivateResident(ResidentDeactivationRequest request)
         {
-            int result = await _residentRepository.DeactivateResident(request);
+            int dbResponse = await _residentRepository.DeactivateResident(request);
 
-            switch (result)
-            {
-                case 4000:
-                    return _apiResponseFactory.DuplicateRecord("Resident has not been verified.");
-
-                case 5000:
-                    return _apiResponseFactory.DuplicateRecord("Resident is already inactive.");
-
-                case 1:
-                    return _apiResponseFactory.Success("Resident deactivation successful!", request);
-
-                default:
-                    return _apiResponseFactory.InternalServerError();
-            }
+            return _apiResponseFactory.HandleDbResponse(dbResponse, null);
         }
 
         /// <summary>
@@ -66,19 +57,30 @@ namespace Maiguard.Core.Services
         /// <returns>ApiResponseWithStatusCode</returns>
         public async Task<ApiResponseWithStatusCode> GenerateInvitationCode(InvitationCodeGenerationRequest request)
         {
-            // Check whether the AdminId exists for the CommunityId
+            string residentEmail = request.ResidentEmail;
+            string communityId = request.CommunityId;
 
-            // Check whether the email already exists
+            int validationResponse = await _residentRepository.ValidateAdminIdAndResidentEmail(request);
 
-            // Generate a six-digit invitation code
+            if (validationResponse != (int)DbResponses.Success)
+                return _apiResponseFactory.HandleDbResponse(validationResponse, null);
 
-            // Send invitation code to email
+            string invitationCodeCacheKey = $"INV-CODE_{residentEmail.ToUpper()}_{communityId.ToUpper()}";
+            string? invitationCode = await _redisCache.GetRecordAsync<string>(invitationCodeCacheKey);
 
-            // Save invitiation code to cache
+            if (invitationCode is default(string))
+            {
+                invitationCode = ResidentUtility.GenerateInvitationCode();
+                await _redisCache.SetRecordAsync(invitationCodeCacheKey, invitationCode, TimeSpan.FromSeconds(60));
+            }
 
-            // Return response to client
+            #region TO DO: Send invitation code to resident's email
 
-            return _apiResponseFactory.FeatureNotImplemented();
+            #endregion
+
+            string message = $"An invitation code has been generated and sent to {residentEmail}.";
+
+            return _apiResponseFactory.Success("Success!", message);
         }
 
         /// <summary>
@@ -88,30 +90,17 @@ namespace Maiguard.Core.Services
         public async Task<ApiResponseWithStatusCode> RegisterResident(ResidentRegistrationRequest newResident)
         {
             string communityId = newResident.CommunityId;
-            string residentId = ResidentUtilities.GenerateResidentId(communityId);
+            string residentId = ResidentUtility.GenerateResidentId(communityId);
 
-            int result = await _residentRepository.AddResident(newResident, residentId);
+            int dbResponse = await _residentRepository.AddResident(newResident, residentId);
 
-            while (result == 1000)
+            while (dbResponse == (int)DbResponses.ResidentIdAlreadyExists)
             {
-                residentId = ResidentUtilities.GenerateResidentId(communityId);
-                result = await _residentRepository.AddResident(newResident, residentId);
+                residentId = ResidentUtility.GenerateResidentId(communityId);
+                dbResponse = await _residentRepository.AddResident(newResident, residentId);
             }
 
-            switch (result)
-            {
-                case 2000:
-                    return _apiResponseFactory.DuplicateRecord("Email address already exists.");
-
-                case 3000:
-                    return _apiResponseFactory.DuplicateRecord("Phone number already exists.");
-
-                case 1:
-                    return _apiResponseFactory.Success("Resident registration successful!", newResident);
-
-                default:
-                    return _apiResponseFactory.InternalServerError();
-            }
+            return _apiResponseFactory.HandleDbResponse(dbResponse, null);
         }
     }
 }

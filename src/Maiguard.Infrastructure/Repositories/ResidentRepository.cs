@@ -51,16 +51,19 @@ namespace Maiguard.Infrastructure.Repositories
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("ResidentId", request.ResidentId);
+            parameters.Add("Success", (int)DbResponses.Success);
             parameters.Add("IsActiveLastUpdatedBy", request.DeactivatedBy);
+            parameters.Add("ResidentNotVerified", (int)DbResponses.ResidentNotVerified);
+            parameters.Add("ResidentAlreadyInactive", (int)DbResponses.ResidentAlreadyInactive);
 
             string query = @"
                     IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE ResidentId = @ResidentId and IsVerified = 0)
 	                    BEGIN
-		                    SELECT 4000;  -- Return 4000 if the resident has not been verified
+		                    SELECT @ResidentNotVerified;
 	                    END
                     ELSE IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE ResidentId = @ResidentId and IsActive = 0)
 	                    BEGIN
-		                    SELECT 5000;  -- Return 5000 if the resident is already inactive
+		                    SELECT @ResidentAlreadyInactive;
 	                    END
                     ELSE
 	                    BEGIN
@@ -68,7 +71,7 @@ namespace Maiguard.Infrastructure.Repositories
 		                    SET IsActive = 0
 		                    WHERE ResidentId = @ResidentId;
 
-		                    SELECT 1;
+		                    SELECT @Success;
                         END";
 
             using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
@@ -90,31 +93,72 @@ namespace Maiguard.Infrastructure.Repositories
             parameters.Add("PhoneNumber", request.PhoneNumber);
             parameters.Add("OnboardedBy", request.OnboardedBy);
             parameters.Add("CommunityId", request.CommunityId);
+            parameters.Add("Success", (int)DbResponses.Success);
             parameters.Add("EmailAddress", request.EmailAddress);
             parameters.Add("RelativeAddress", request.RelativeAddress);
             parameters.Add("RecordLastUpdatedBy", request.OnboardedBy);
             parameters.Add("IsActiveLastUpdatedBy", request.OnboardedBy);
+            parameters.Add("EmailAlreadyExists", (int)DbResponses.EmailAlreadyExists);
+            parameters.Add("ResidentIdAlreadyExists", (int)DbResponses.ResidentIdAlreadyExists);
+            parameters.Add("PhoneNumberAlreadyExists", (int)DbResponses.PhoneNumberAlreadyExists);
 
             string query = @"
                             IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE ResidentId = @ResidentId)
                                 BEGIN
-                                    SELECT 1000;  -- Return 1000 if the resident Id already exists
+                                    SELECT @ResidentIdAlreadyExists;
                                 END                        
                             ELSE IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE EmailAddress = @EmailAddress)
                                 BEGIN
-                                    SELECT 2000;  -- Return 2000 if the email address already exists
+                                    SELECT @EmailAlreadyExists;
                                 END
                             ELSE IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE PhoneNumber = @PhoneNumber)
                                 BEGIN
-                                    SELECT 3000;  -- Return 3000 if the phone number already exists
+                                    SELECT @PhoneNumberAlreadyExists;
                                 END
                             ELSE
                                 BEGIN
                                     INSERT INTO [Maiguard].[dbo].[Residents] (ResidentId, CommunityId, FirstName, LastName, EmailAddress, PhoneNumber, RelativeAddress, OnboardedBy, IsActiveLastUpdatedBy, RecordLastUpdatedBy)
                                     VALUES (@ResidentId, @CommunityId, @FirstName, @LastName, @EmailAddress, @PhoneNumber, @RelativeAddress, @OnboardedBy, @IsActiveLastUpdatedBy, @RecordLastUpdatedBy);
 
-                                    SELECT 1;
+                                    SELECT @Success;
                                 END";
+
+            using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
+            {
+                result = await dbConnection.QueryAsync<int>(query, parameters);
+            }
+
+            return result.FirstOrDefault();
+        }
+
+        public async Task<int> ValidateAdminIdAndResidentEmail(InvitationCodeGenerationRequest request)
+        {
+            IEnumerable<int> result;
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("AdminId", request.AdminId);
+            parameters.Add("CommunityId", request.CommunityId);
+            parameters.Add("Success", (int)DbResponses.Success);
+            parameters.Add("ResidentEmail", request.ResidentEmail);
+            parameters.Add("EmailAlreadyExists", (int)DbResponses.EmailAlreadyExists);
+            parameters.Add("AdminIdNotValidForCommunity", (int)DbResponses.AdminIdNotValidForCommunity);
+
+            string query = @"
+                    IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Admins] WHERE AdminId = @AdminId and CommunityId = @CommunityId)
+                        BEGIN
+		                    IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE EmailAddress = @ResidentEmail)
+			                    BEGIN
+				                    SELECT @EmailAlreadyExists;
+			                    END
+		                    ELSE
+			                    BEGIN
+				                    SELECT @Success;
+			                    END
+	                    END
+                    ELSE
+	                    BEGIN
+		                    SELECT @AdminIdNotValidForCommunity;
+	                    END";
 
             using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
             {

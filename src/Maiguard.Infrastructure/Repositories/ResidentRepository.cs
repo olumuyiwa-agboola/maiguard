@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Azure.Core;
+using Dapper;
 using Maiguard.Core.Abstractions.IRepositories;
 using Maiguard.Core.Enums;
 using Maiguard.Core.Models.Residents;
@@ -8,10 +9,50 @@ namespace Maiguard.Infrastructure.Repositories
 {
     public class ResidentRepository(IDbContext _dbContext) : IResidentRepository
     {
+        public async Task<(int, Resident?)> GetResident(string residentId)
+        {
+            Resident? resident = new();
+            (int, Resident?) result = new();
+            DynamicParameters parameters = new();
+
+            parameters.Add("ResidentId", residentId);
+
+            string query = @"
+                    SELECT r.[ResidentId], r.[FirstName], r.[LastName], r.[EmailAddress], r.[IsVerified] AS VerificationStatus, r.[PhoneNumber], 
+                        CAST(DAY(r.[OnboardedAt]) AS VARCHAR(2)) + ' ' + FORMAT(r.[OnboardedAt], 'MMMM, yyyy') AS RegistrationDate, c.[FullName] AS CommunityName, r.[IsActive] AS Status,
+		                CONCAT(r.[RelativeAddress], ', ', c.[FullName], ', ', c.[Address], ', ', c.[Location], ', ', c.[LocalGovernmentArea], ' LGA', ', ', c.[State], ' State') AS Address
+                    FROM [Maiguard].[dbo].[Residents] r INNER JOIN [Maiguard].[dbo].[Communities] c ON r.[CommunityId] = c.[CommunityId]
+                    WHERE r.[ResidentId] = 'RFHADI5188';";
+
+            using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
+            {
+                resident = (await dbConnection.QueryAsync<Resident>(query, parameters)).FirstOrDefault();
+            }
+
+            if (resident != null)
+            {
+                if (resident.Status == "true")
+                    resident.Status = "Active";
+                else
+                    resident.Status = "Inactive";
+
+                if (resident.VerificationStatus == "true")
+                    resident.VerificationStatus = "Verified";
+                else
+                    resident.VerificationStatus = "Not verified";
+
+                result = ((int)DbResponses.Success, resident);
+            }
+            else
+                result = ((int)DbResponses.NoRecordFound, null);
+
+            return result;
+        }
+
         public async Task<int> ActivateResident(ResidentActivationRequest request)
         {
             IEnumerable<int> result;
-            DynamicParameters parameters = new DynamicParameters();
+            DynamicParameters parameters = new();
 
             parameters.Add("ResidentId", request.ResidentId);
             parameters.Add("Success", (int)DbResponses.Success);
@@ -48,7 +89,7 @@ namespace Maiguard.Infrastructure.Repositories
         public async Task<int> DeactivateResident(ResidentDeactivationRequest request)
         {
             IEnumerable<int> result;
-            DynamicParameters parameters = new DynamicParameters();
+            DynamicParameters parameters = new();
 
             parameters.Add("ResidentId", request.ResidentId);
             parameters.Add("Success", (int)DbResponses.Success);
@@ -85,7 +126,7 @@ namespace Maiguard.Infrastructure.Repositories
         public async Task<int> AddResident(ResidentRegistrationRequest request, string residentId)
         {
             IEnumerable<int> result;
-            DynamicParameters parameters = new DynamicParameters();
+            DynamicParameters parameters = new();
 
             parameters.Add("ResidentId", residentId);
             parameters.Add("LastName", request.LastName);
@@ -134,7 +175,7 @@ namespace Maiguard.Infrastructure.Repositories
         public async Task<int> ValidateAdminIdAndResidentEmail(InvitationCodeGenerationRequest request)
         {
             IEnumerable<int> result;
-            DynamicParameters parameters = new DynamicParameters();
+            DynamicParameters parameters = new();
 
             parameters.Add("AdminId", request.AdminId);
             parameters.Add("CommunityId", request.CommunityId);

@@ -34,6 +34,10 @@
 
         /// <summary>
         /// </summary>
-        ResidentAlreadyInactive
+        ResidentAlreadyInactive,
+
+        /// <summary>
+        /// </summary>
+        NoRecordFound
     }
 }

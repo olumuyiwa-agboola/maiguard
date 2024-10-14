@@ -31,6 +31,17 @@ namespace Maiguard.Core.Services
 
         /// <summary>
         /// </summary>
+        /// <param name="residentId"></param>
+        /// <returns>ApiResponseWithStatusCode</returns>
+        public async Task<ApiResponseWithStatusCode> GetResident(string residentId)
+        {
+            var dbResponse = await _residentRepository.GetResident(residentId);
+
+            return _apiResponseFactory.HandleDbResponse(dbResponse.Item1, dbResponse.Item2);
+        }
+
+        /// <summary>
+        /// </summary>
         /// <param name="request"></param>
         /// <returns>ApiResponseWithStatusCode</returns>
         public async Task<ApiResponseWithStatusCode> ActivateResident(ResidentActivationRequest request)
@@ -80,7 +91,7 @@ namespace Maiguard.Core.Services
 
             string message = $"An invitation code has been generated and sent to {residentEmail}.";
 
-            return _apiResponseFactory.Success("Success!", message);
+            return _apiResponseFactory.Success("Success", message);
         }
 
         /// <summary>

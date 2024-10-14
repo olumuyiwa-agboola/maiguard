@@ -11,6 +11,13 @@ namespace Maiguard.Core.Abstractions.IServices
     public interface IResidentService
     {
         /// <summary>
+        /// Executes the business logic for retrieving a resident's information
+        /// </summary>
+        /// <param name="residentId"></param>
+        /// <returns>ApiResponseWithStatusCode</returns>
+        public Task<ApiResponseWithStatusCode> GetResident(string residentId);
+
+        /// <summary>
         /// Executes the business logic for registering a new resident
         /// </summary>
         /// <param name="request"></param>

@@ -14,6 +14,13 @@ namespace Maiguard.Core.Abstractions.IRepositories
     public interface IResidentRepository
     {
         /// <summary>
+        /// Executes the business logic for retrieving a resident's information
+        /// </summary>
+        /// <param name="residentId"></param>
+        /// <returns>int</returns>
+        public Task<(int, Resident?)> GetResident(string residentId);
+
+        /// <summary>
         /// Executes the data access and persistence logic for 
         /// saving a new resident's information to the database
         /// </summary>

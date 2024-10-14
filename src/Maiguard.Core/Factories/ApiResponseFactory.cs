@@ -24,12 +24,12 @@ namespace Maiguard.Core.Factories
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="dbResponse"></param>
+        /// <param name="result"></param>
         /// <param name="data"></param>
         /// <returns>ApiResponseWithStatusCode</returns>
-        public ApiResponseWithStatusCode HandleDbResponse(int dbResponse, object? data)
+        public ApiResponseWithStatusCode HandleDbResponse(int result, object? data)
         {
-            switch (dbResponse)
+            switch (result)
             {
                 case (int)DbResponses.PhoneNumberAlreadyExists:
                     return DuplicateRecord("Phone number already exists.");
@@ -48,6 +48,9 @@ namespace Maiguard.Core.Factories
 
                 case (int)DbResponses.ResidentAlreadyInactive:
                     return DuplicateRecord("Resident is already inactive.");
+
+                case (int)DbResponses.NoRecordFound:
+                    return NoRecordFound("No record found.");
 
                 case (int)DbResponses.Success:
                     return Success("Success", data);
@@ -99,6 +102,29 @@ namespace Maiguard.Core.Factories
             {
                 StatusCode = (int)HttpStatusCode.Conflict,
                 ApiResponse = problemDetails
+            };
+        }
+
+        /// <summary>
+        /// Builds and returns an API response that indicates that no record was found in the database
+        /// </summary>
+        /// <param name="message">Message to be returned as the ProblemDetail title</param>
+        /// <returns>ApiResponseWithStatusCode</returns>
+        public ApiResponseWithStatusCode NoRecordFound(string message = "No record found.")
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            string instance = httpContext!.Request!.Path.Value;
+
+            return new ApiResponseWithStatusCode()
+            {
+                StatusCode = (int)HttpStatusCode.NotFound,
+                ApiResponse = new ProblemDetails()
+                {
+                    Status = (int)HttpStatusCode.NotFound,
+                    Instance = instance,
+                    Title = message,
+                    Type = "https://tools.ietf.org/doc/html/rfc7231#section-6.5.4",
+                }
             };
         }
 

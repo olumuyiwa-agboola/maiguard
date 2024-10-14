@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,18 +6,6 @@ using System.Threading.Tasks;
 
 namespace Maiguard.Core.Models.Residents
 {
-    /// <summary>
-    /// Model for requesting for a resident's information
-    /// </summary>
-    public class GetResidentRequest
-    {
-        /// <summary>
-        /// Resident Id
-        /// </summary>
-        /// <example>RFHADI5188</example>
-        [FromQuery]
-        public string? ResidentId { get; set; }
-    }
     /// <summary>
     /// Model representing a resident
     /// </summary>

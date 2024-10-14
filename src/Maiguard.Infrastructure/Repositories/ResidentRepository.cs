@@ -22,7 +22,7 @@ namespace Maiguard.Infrastructure.Repositories
                         CAST(DAY(r.[OnboardedAt]) AS VARCHAR(2)) + ' ' + FORMAT(r.[OnboardedAt], 'MMMM, yyyy') AS RegistrationDate, c.[FullName] AS CommunityName, r.[IsActive] AS Status,
 		                CONCAT(r.[RelativeAddress], ', ', c.[FullName], ', ', c.[Address], ', ', c.[Location], ', ', c.[LocalGovernmentArea], ' LGA', ', ', c.[State], ' State') AS Address
                     FROM [Maiguard].[dbo].[Residents] r INNER JOIN [Maiguard].[dbo].[Communities] c ON r.[CommunityId] = c.[CommunityId]
-                    WHERE r.[ResidentId] = 'RFHADI5188' AND r.[IsDeleted] = 0;";
+                    WHERE r.[ResidentId] = @ResidentId AND r.[IsDeleted] = 0;";
 
             using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
             {

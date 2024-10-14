@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Maiguard.Core.Abstractions.IRepositories;
+using Maiguard.Core.Enums;
 using Maiguard.Core.Models.Residents;
 using System.Data;
 
@@ -13,16 +14,19 @@ namespace Maiguard.Infrastructure.Repositories
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("ResidentId", request.ResidentId);
+            parameters.Add("Success", (int)DbResponses.Success);
             parameters.Add("IsActiveLastUpdatedBy", request.ActivatedBy);
+            parameters.Add("ResidentNotVerified", (int)DbResponses.ResidentNotVerified);
+            parameters.Add("ResidentAlreadyActive", (int)DbResponses.ResidentAlreadyActive);
 
             string query = @"
                     IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE ResidentId = @ResidentId and IsVerified = 0)
 	                    BEGIN
-		                    SELECT 4000;  -- Return 4000 if the resident has not been verified
+		                    SELECT @ResidentNotVerified;
 	                    END
                     ELSE IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE ResidentId = @ResidentId and IsActive = 1)
 	                    BEGIN
-		                    SELECT 5000;  -- Return 5000 if the resident is already active
+		                    SELECT @ResidentAlreadyActive;
 	                    END
                     ELSE
 	                    BEGIN
@@ -30,8 +34,8 @@ namespace Maiguard.Infrastructure.Repositories
 		                    SET IsActive = 1
 		                    WHERE ResidentId = @ResidentId;
 
-		                    SELECT 1;
-	                END";
+		                    SELECT @Success;
+	                    END";
 
             using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
             {
@@ -65,7 +69,7 @@ namespace Maiguard.Infrastructure.Repositories
 		                    WHERE ResidentId = @ResidentId;
 
 		                    SELECT 1;
-	                END";
+                        END";
 
             using (IDbConnection dbConnection = _dbContext.MaiguardDbConnection())
             {

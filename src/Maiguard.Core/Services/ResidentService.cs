@@ -1,19 +1,10 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using Maiguard.Core.Abstractions.IFactories;
+﻿using Maiguard.Core.Abstractions.IFactories;
 using Maiguard.Core.Abstractions.IRepositories;
 using Maiguard.Core.Abstractions.IServices;
-using Maiguard.Core.Factories;
+using Maiguard.Core.Enums;
 using Maiguard.Core.Models.APIResponseModels;
 using Maiguard.Core.Models.Residents;
 using Maiguard.Core.Utilities;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Maiguard.Core.Services
 {
@@ -42,20 +33,7 @@ namespace Maiguard.Core.Services
         {
             int result = await _residentRepository.ActivateResident(request);
 
-            switch (result)
-            {
-                case 4000:
-                    return _apiResponseFactory.DuplicateRecord("Resident has not been verified.");
-
-                case 5000:
-                    return _apiResponseFactory.DuplicateRecord("Resident is already active.");
-
-                case 1:
-                    return _apiResponseFactory.Success("Resident activation successful!", result);
-
-                default:
-                    return _apiResponseFactory.InternalServerError();
-            }
+            return _apiResponseFactory.HandleDbResponse(result, null);
         }
 
         /// <summary>
@@ -88,6 +66,18 @@ namespace Maiguard.Core.Services
         /// <returns>ApiResponseWithStatusCode</returns>
         public async Task<ApiResponseWithStatusCode> GenerateInvitationCode(InvitationCodeGenerationRequest request)
         {
+            // Check whether the AdminId exists for the CommunityId
+
+            // Check whether the email already exists
+
+            // Generate a six-digit invitation code
+
+            // Send invitation code to email
+
+            // Save invitiation code to cache
+
+            // Return response to client
+
             return _apiResponseFactory.FeatureNotImplemented();
         }
 

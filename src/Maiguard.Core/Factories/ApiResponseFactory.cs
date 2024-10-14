@@ -1,4 +1,5 @@
 ﻿using Maiguard.Core.Abstractions.IFactories;
+using Maiguard.Core.Enums;
 using Maiguard.Core.Models.APIResponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,30 @@ namespace Maiguard.Core.Factories
         public ApiResponseFactory(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dbResponse"></param>
+        /// <param name="data"></param>
+        /// <returns>ApiResponseWithStatusCode</returns>
+        public ApiResponseWithStatusCode HandleDbResponse(int dbResponse, object? data)
+        {
+            switch (dbResponse)
+            {
+                case (int)DbResponses.ResidentNotVerified:
+                    return DuplicateRecord("Resident has not been verified.");
+
+                case (int)DbResponses.ResidentAlreadyActive:
+                    return DuplicateRecord("Resident is already active.");
+
+                case (int)DbResponses.Success:
+                    return Success("Resident activation successful!", data);
+
+                default:
+                    return InternalServerError();
+            }
         }
 
         /// <summary>

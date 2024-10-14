@@ -13,6 +13,13 @@ namespace Maiguard.Core.Abstractions.IFactories
     {
         /// <summary>
         /// </summary>
+        /// <param name="dbResponse"></param>
+        /// <param name="data"></param>
+        /// <returns>ApiResponseWithStatusCode</returns>
+        public ApiResponseWithStatusCode HandleDbResponse(int dbResponse, object? data);
+
+        /// <summary>
+        /// </summary>
         /// <param name="message"></param>
         /// <param name="data"></param>
         /// <returns>ApiResponseWithStatusCode</returns>

@@ -1,11 +1,13 @@
 ﻿using Maiguard.Core.Abstractions.IFactories;
 using Maiguard.Core.Abstractions.IRepositories;
 using Maiguard.Core.Abstractions.IServices;
+using Maiguard.Core.AppSettings;
 using Maiguard.Core.Enums;
 using Maiguard.Core.Models.APIResponseModels;
 using Maiguard.Core.Models.Residents;
 using Maiguard.Core.Utilities;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 
 namespace Maiguard.Core.Services
 {
@@ -14,19 +16,23 @@ namespace Maiguard.Core.Services
     public class ResidentService : IResidentService
     {
         private readonly IDistributedCache _redisCache;
+        private readonly RedisCacheSettings _redisCacheSettings;
         private readonly IResidentRepository _residentRepository;
         private readonly IApiResponseFactory _apiResponseFactory;
 
         /// <summary>
         /// </summary>
-        /// <param name="residentRepository"></param>
         /// <param name="redisCache"></param>
+        /// <param name="residentRepository"></param>
+        /// <param name="redisCacheSettings"></param>
         /// <param name="apiResponseFactory"></param>
-        public ResidentService(IResidentRepository residentRepository, IDistributedCache redisCache, IApiResponseFactory apiResponseFactory)
+        public ResidentService(IResidentRepository residentRepository, IDistributedCache redisCache, 
+            IApiResponseFactory apiResponseFactory, IOptions<RedisCacheSettings> redisCacheSettings)
         {
             _redisCache = redisCache;
             _residentRepository = residentRepository;
             _apiResponseFactory = apiResponseFactory;
+            _redisCacheSettings = redisCacheSettings.Value;
         }
 
         /// <summary>
@@ -68,8 +74,9 @@ namespace Maiguard.Core.Services
         /// <returns>ApiResponseWithStatusCode</returns>
         public async Task<ApiResponseWithStatusCode> GenerateInvitationCode(InvitationCodeGenerationRequest request)
         {
-            string residentEmail = request.ResidentEmail;
             string communityId = request.CommunityId;
+            string residentEmail = request.ResidentEmail;
+            var invitationCodeExpiration = TimeSpan.FromMinutes(_redisCacheSettings.InvitationCodeAbsoluteExpiration);
 
             int validationResponse = await _residentRepository.ValidateAdminIdAndResidentEmail(request);
 
@@ -82,7 +89,7 @@ namespace Maiguard.Core.Services
             if (invitationCode is default(string))
             {
                 invitationCode = ResidentUtility.GenerateInvitationCode();
-                await _redisCache.SetRecordAsync(invitationCodeCacheKey, invitationCode, TimeSpan.FromSeconds(60));
+                await _redisCache.SetRecordAsync(invitationCodeCacheKey, invitationCode, invitationCodeExpiration);
             }
 
             #region TO DO: Send invitation code to resident's email

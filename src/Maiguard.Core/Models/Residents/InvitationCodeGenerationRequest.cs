@@ -20,7 +20,7 @@ namespace Maiguard.Core.Models.Residents
         /// <summary>
         /// Community admin Id
         /// </summary>
-        /// <example>ASUPER0001</example>
+        /// <example>AFHADI01</example>
         public string AdminId { get; set; } = string.Empty;
 
         /// <summary>

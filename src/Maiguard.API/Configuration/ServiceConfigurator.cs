@@ -10,6 +10,7 @@ using Maiguard.Core.Factories;
 using Maiguard.Core.Abstractions.IFactories;
 using Maiguard.Core.Attributes;
 using Microsoft.Extensions.DependencyInjection;
+using Maiguard.Core.AppSettings;
 
 namespace Maiguard.API.Configuration
 {
@@ -17,6 +18,11 @@ namespace Maiguard.API.Configuration
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            #region Config values
+            services.Configure<RedisCacheSettings>(configuration.GetSection(RedisCacheSettings.Options));
+            services.Configure<DbConnectionSettings>(configuration.GetSection(DbConnectionSettings.ConnectionStrings));
+            #endregion
+
             #region Controller, HTTP and routing configuration
             services.AddControllers(options =>
             {
@@ -48,11 +54,14 @@ namespace Maiguard.API.Configuration
             services.AddValidatorsFromAssemblyContaining<ResidentRegistrationRequestValidator>();
             #endregion
 
-            #region Cache
+            #region Redis Cache
+            string redisConnectionStringName = configuration.GetConnectionString("Redis")!;
+            string redisInstanceName = configuration.GetValue<string>("RedisCacheConfiguration:InstanceName")!;
+
             services.AddStackExchangeRedisCache(options =>
             {
-                options.Configuration = configuration.GetConnectionString("Redis");
-                options.InstanceName = "Maiguard_";
+                options.InstanceName = redisInstanceName;
+                options.Configuration = redisConnectionStringName;
             });
             #endregion
 
@@ -64,10 +73,6 @@ namespace Maiguard.API.Configuration
             });
             services.AddEndpointsApiExplorer();
             services.AddFluentValidationRulesToSwagger();
-            #endregion
-
-            #region Config values
-            services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionStrings"));
             #endregion
 
             return services;

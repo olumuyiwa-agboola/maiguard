@@ -121,7 +121,7 @@ namespace Maiguard.Core.Libraries
         {
             return ruleBuilder
                 .NotEmpty().WithMessage(ValidationMessages.IsRequired)
-                .MaximumLength(8).WithMessage(ValidationMessages.MaximumLengthExceeded)
+                .Length(6).WithMessage(ValidationMessages.RequiredLengthForDigitsNotProvided)
                 .Matches(ValidationRegexes.InvitationCode).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.InvitationCode);
         }
     }

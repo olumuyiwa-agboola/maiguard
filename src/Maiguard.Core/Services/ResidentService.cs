@@ -28,7 +28,7 @@ namespace Maiguard.Core.Services
         /// <param name="redisCacheSettings"></param>
         /// <param name="emailService"></param>
         /// <param name="apiResponseFactory"></param>
-        public ResidentService(IResidentRepository residentRepository, IDistributedCache redisCache, 
+        public ResidentService(IResidentRepository residentRepository, IDistributedCache redisCache,
             IApiResponseFactory apiResponseFactory, IOptions<RedisCacheSettings> redisCacheSettings,
             IEmailService emailService)
         {
@@ -90,7 +90,7 @@ namespace Maiguard.Core.Services
             string invitationCodeCacheKey = $"INV-CODE_{residentEmail.ToUpper()}_{communityId.ToUpper()}";
             string? invitationCode = await _redisCache.GetRecordAsync<string>(invitationCodeCacheKey);
 
-            if (invitationCode is default(string))
+            if (string.IsNullOrEmpty(invitationCode) || string.IsNullOrWhiteSpace(invitationCode))
             {
                 invitationCode = ResidentUtility.GenerateInvitationCode();
                 await _redisCache.SetRecordAsync(invitationCodeCacheKey, invitationCode, invitationCodeExpiration);
@@ -105,19 +105,31 @@ namespace Maiguard.Core.Services
 
         /// <summary>
         /// </summary>
-        /// <param name="newResident"></param>
+        /// <param name="request"></param>
         /// <returns>ApiResponseWithStatusCode</returns>
-        public async Task<ApiResponseWithStatusCode> RegisterResident(ResidentRegistrationRequest newResident)
+        public async Task<ApiResponseWithStatusCode> RegisterResident(ResidentRegistrationRequest request)
         {
-            string communityId = newResident.CommunityId;
+            string communityId = request.CommunityId;
+            string residentEmail = request.EmailAddress;
             string residentId = ResidentUtility.GenerateResidentId(communityId);
 
-            int dbResponse = await _residentRepository.AddResident(newResident, residentId);
+            if (request.OnboardedBy == "SELF")
+            {
+                string invitationCodeCacheKey = $"INV-CODE_{residentEmail.ToUpper()}_{communityId.ToUpper()}";
+                string? invitationCode = await _redisCache.GetRecordAsync<string>(invitationCodeCacheKey);
+
+                if (string.IsNullOrEmpty(invitationCode) || string.IsNullOrWhiteSpace(invitationCode) || invitationCode != request.InvitationCode)
+                {
+                    return _apiResponseFactory.FailedValidation("Invalid or incorrect invitation code");
+                }
+            }
+
+            int dbResponse = await _residentRepository.AddResident(request, residentId);
 
             while (dbResponse == (int)DbResponses.ResidentIdAlreadyExists)
             {
                 residentId = ResidentUtility.GenerateResidentId(communityId);
-                dbResponse = await _residentRepository.AddResident(newResident, residentId);
+                dbResponse = await _residentRepository.AddResident(request, residentId);
             }
 
             return _apiResponseFactory.HandleDbResponse(dbResponse, null);

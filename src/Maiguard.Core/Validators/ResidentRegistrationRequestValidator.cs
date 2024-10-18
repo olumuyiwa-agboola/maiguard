@@ -34,9 +34,10 @@ namespace Maiguard.Core.Validators
 
             When(model => (model.OnboardedBy != "SELF"), () =>
             {
-                RuleFor(model => model.InvitationCode).Null();
+                RuleFor(model => model.InvitationCode)
+                .Must(value => string.IsNullOrEmpty(value))
+                .WithMessage(ValidationMessages.IsNotRequired);
             });
         }
-
     }
 }

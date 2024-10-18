@@ -9,7 +9,6 @@ using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Maiguard.Core.Factories;
 using Maiguard.Core.Abstractions.IFactories;
 using Maiguard.Core.Attributes;
-using Microsoft.Extensions.DependencyInjection;
 using Maiguard.Core.AppSettings;
 
 namespace Maiguard.API.Configuration
@@ -21,6 +20,7 @@ namespace Maiguard.API.Configuration
             #region Config values
             services.Configure<RedisCacheSettings>(configuration.GetSection(RedisCacheSettings.Options));
             services.Configure<DbConnectionSettings>(configuration.GetSection(DbConnectionSettings.ConnectionStrings));
+            services.Configure<EmailClientConfiguration>(configuration.GetSection(EmailClientConfiguration.Options));
             #endregion
 
             #region Controller, HTTP and routing configuration
@@ -37,6 +37,7 @@ namespace Maiguard.API.Configuration
             #endregion
 
             #region Services
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IResidentService, ResidentService>();
             services.AddScoped<IAccessCodeService, AccessCodeService>();
             #endregion

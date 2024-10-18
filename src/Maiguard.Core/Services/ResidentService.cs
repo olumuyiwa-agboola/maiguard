@@ -15,6 +15,7 @@ namespace Maiguard.Core.Services
     /// </summary>
     public class ResidentService : IResidentService
     {
+        private readonly IEmailService _emailService;
         private readonly IDistributedCache _redisCache;
         private readonly RedisCacheSettings _redisCacheSettings;
         private readonly IResidentRepository _residentRepository;
@@ -25,11 +26,14 @@ namespace Maiguard.Core.Services
         /// <param name="redisCache"></param>
         /// <param name="residentRepository"></param>
         /// <param name="redisCacheSettings"></param>
+        /// <param name="emailService"></param>
         /// <param name="apiResponseFactory"></param>
         public ResidentService(IResidentRepository residentRepository, IDistributedCache redisCache, 
-            IApiResponseFactory apiResponseFactory, IOptions<RedisCacheSettings> redisCacheSettings)
+            IApiResponseFactory apiResponseFactory, IOptions<RedisCacheSettings> redisCacheSettings,
+            IEmailService emailService)
         {
             _redisCache = redisCache;
+            _emailService = emailService;
             _residentRepository = residentRepository;
             _apiResponseFactory = apiResponseFactory;
             _redisCacheSettings = redisCacheSettings.Value;
@@ -76,7 +80,7 @@ namespace Maiguard.Core.Services
         {
             string communityId = request.CommunityId;
             string residentEmail = request.ResidentEmail;
-            var invitationCodeExpiration = TimeSpan.FromMinutes(_redisCacheSettings.InvitationCodeAbsoluteExpiration);
+            var invitationCodeExpiration = TimeSpan.FromHours(_redisCacheSettings.InvitationCodeAbsoluteExpiration);
 
             int validationResponse = await _residentRepository.ValidateAdminIdAndResidentEmail(request);
 
@@ -92,9 +96,7 @@ namespace Maiguard.Core.Services
                 await _redisCache.SetRecordAsync(invitationCodeCacheKey, invitationCode, invitationCodeExpiration);
             }
 
-            #region TO DO: Send invitation code to resident's email
-
-            #endregion
+            await _emailService.SendInvitationViaEmail(invitationCode, request.ResidentEmail, request.ResidentFirstName);
 
             string message = $"An invitation code has been generated and sent to {residentEmail}.";
 

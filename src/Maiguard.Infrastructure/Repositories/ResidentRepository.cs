@@ -185,7 +185,7 @@ namespace Maiguard.Infrastructure.Repositories
             parameters.Add("AdminIdNotValidForCommunity", (int)DbResponses.AdminIdNotValidForCommunity);
 
             string query = @"
-                    IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Admins] WHERE AdminId = @AdminId and CommunityId = @CommunityId)
+                    IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Communities] WHERE AdminId = @AdminId and CommunityId = @CommunityId)
                         BEGIN
 		                    IF EXISTS (SELECT 1 FROM [Maiguard].[dbo].[Residents] WHERE EmailAddress = @ResidentEmail)
 			                    BEGIN

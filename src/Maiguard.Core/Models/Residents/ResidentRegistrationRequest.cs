@@ -8,7 +8,7 @@
         /// <summary>
         /// Community Id
         /// </summary>
-        /// <example>C123456FHADI</example>
+        /// <example>C000001FHADI</example>
         public string CommunityId { get; set; } = string.Empty;
 
         /// <summary>
@@ -50,7 +50,7 @@
         /// <summary>
         /// Invitation code
         /// </summary>
-        /// <example>12345678</example>
+        /// <example>137892</example>
         public string InvitationCode { get; set; } = string.Empty;
     }
 }

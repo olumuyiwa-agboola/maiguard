@@ -16,6 +16,6 @@ namespace Maiguard.Core.Abstractions.IServices
         /// <param name="recipient"></param>
         /// <param name="recipientName"></param>
         /// <returns></returns>
-        Task SendInvitationViaEmail(string invitationCode, string recipient, string recipientName);
+        Task SendInvitationCodeViaEmail(string invitationCode, string recipient, string recipientName);
     }
 }

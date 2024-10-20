@@ -14,13 +14,13 @@ namespace Maiguard.Core.Models.Residents
         /// <summary>
         /// Resident Id
         /// </summary>
-        /// <example>RFHADI5188</example>
+        /// <example>RFHADI0001</example>
         public string ResidentId { get; set; } = string.Empty;
 
         /// <summary>
         /// Verification code
         /// </summary>
-        /// <example>123456</example>
+        /// <example>145893</example>
         public string VerificationCode { get; set; } = string.Empty;
     }
 }

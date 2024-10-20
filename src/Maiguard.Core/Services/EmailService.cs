@@ -30,7 +30,7 @@ namespace Maiguard.Core.Services
         /// <param name="recipient"></param>
         /// <param name="recipientName"></param>
         /// <returns></returns>
-        public async Task SendInvitationViaEmail(string invitationCode, string recipient, string recipientName)
+        public async Task SendInvitationCodeViaEmail(string invitationCode, string recipient, string recipientName)
         {
             string invitationCodeEmailBody = @$"
                             Dear {recipientName},

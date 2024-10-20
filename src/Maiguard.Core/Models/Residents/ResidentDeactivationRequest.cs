@@ -8,7 +8,7 @@
         /// <summary>
         /// Resident Id
         /// </summary>
-        /// <example>RFHADI5188</example>
+        /// <example>RFHADI0001</example>
         public string ResidentId { get; set; } = string.Empty;
 
         /// <summary>

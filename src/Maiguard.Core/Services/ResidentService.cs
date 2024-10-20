@@ -96,7 +96,7 @@ namespace Maiguard.Core.Services
                 await _redisCache.SetRecordAsync(invitationCodeCacheKey, invitationCode, invitationCodeExpiration);
             }
 
-            await _emailService.SendInvitationViaEmail(invitationCode, request.ResidentEmail, request.ResidentFirstName);
+            await _emailService.SendInvitationCodeViaEmail(invitationCode, request.ResidentEmail, request.ResidentFirstName);
 
             string message = $"An invitation code has been generated and sent to {residentEmail}.";
 

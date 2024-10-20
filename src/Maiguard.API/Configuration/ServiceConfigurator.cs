@@ -55,17 +55,6 @@ namespace Maiguard.API.Configuration
             services.AddValidatorsFromAssemblyContaining<ResidentRegistrationRequestValidator>();
             #endregion
 
-            #region Redis Cache
-            string redisConnectionStringName = configuration.GetConnectionString("Redis")!;
-            string redisInstanceName = configuration.GetValue<string>("RedisCacheConfiguration:InstanceName")!;
-
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.InstanceName = redisInstanceName;
-                options.Configuration = redisConnectionStringName;
-            });
-            #endregion
-
             #region Swagger configuration
             services.AddSwaggerGen(c =>
             {

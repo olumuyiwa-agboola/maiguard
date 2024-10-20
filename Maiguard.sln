@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maiguard.API", "src\Maiguar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maiguard.Infrastructure", "src\Maiguard.Infrastructure\Maiguard.Infrastructure.csproj", "{7FD925E5-20A9-42A9-8058-C81707B70532}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maiguard.Core", "src\Maiguard.Core\Maiguard.Core.csproj", "{C0F4A2FB-919A-4EB6-820D-207008F737B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maiguard.Core", "src\Maiguard.Core\Maiguard.Core.csproj", "{C0F4A2FB-919A-4EB6-820D-207008F737B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maiguard.AppHost", "src\Maiguard.AppHost\Maiguard.AppHost.csproj", "{D8849E53-EF4D-490A-A41C-9F0B571BBCB1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maiguard.ServiceDefaults", "src\Maiguard.ServiceDefaults\Maiguard.ServiceDefaults.csproj", "{A343BC8D-71D1-4B2E-8DC2-E5A9ADEC7BEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{C0F4A2FB-919A-4EB6-820D-207008F737B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0F4A2FB-919A-4EB6-820D-207008F737B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0F4A2FB-919A-4EB6-820D-207008F737B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8849E53-EF4D-490A-A41C-9F0B571BBCB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8849E53-EF4D-490A-A41C-9F0B571BBCB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8849E53-EF4D-490A-A41C-9F0B571BBCB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8849E53-EF4D-490A-A41C-9F0B571BBCB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A343BC8D-71D1-4B2E-8DC2-E5A9ADEC7BEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A343BC8D-71D1-4B2E-8DC2-E5A9ADEC7BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A343BC8D-71D1-4B2E-8DC2-E5A9ADEC7BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A343BC8D-71D1-4B2E-8DC2-E5A9ADEC7BEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

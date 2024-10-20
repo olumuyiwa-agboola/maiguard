@@ -7,9 +7,26 @@ using System.Threading.Tasks;
 namespace Maiguard.Core.Models.AccessCodes
 {
     /// <summary>
-    /// 
+    /// Model for cancelling an access code
     /// </summary>
     public class AccessCodeCancellationRequest
     {
+        /// <summary>
+        /// Resident Id
+        /// </summary>
+        /// <example>RFHADI0001</example>
+        public string ResidentId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Access code
+        /// </summary>
+        /// <example>141397</example>
+        public string AccessCode { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Community Id
+        /// </summary>
+        /// <example>C000001FHADI</example>
+        public string CommunityId { get; set; } = string.Empty;
     }
 }

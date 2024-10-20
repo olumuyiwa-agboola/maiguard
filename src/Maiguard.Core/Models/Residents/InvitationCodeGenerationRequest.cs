@@ -14,7 +14,7 @@ namespace Maiguard.Core.Models.Residents
         /// <summary>
         /// Community Id
         /// </summary>
-        /// <example>C123456FHADI</example>
+        /// <example>C000001FHADI</example>
         public string CommunityId { get; set; } = string.Empty;
 
         /// <summary>
@@ -26,13 +26,13 @@ namespace Maiguard.Core.Models.Residents
         /// <summary>
         /// Resident's first name
         /// </summary>
-        /// <example>OLUMUYIWA</example>
+        /// <example>Olumuyiwa Agboola</example>
         public string ResidentFirstName { get; set; } = string.Empty;
 
         /// <summary>
         /// Resident's last name
         /// </summary>
-        /// <example>AGBOOLA</example>
+        /// <example>Agboola</example>
         public string ResidentLastName { get; set; } = string.Empty;
 
         /// <summary>

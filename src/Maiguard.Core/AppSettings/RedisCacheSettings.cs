@@ -13,9 +13,6 @@ namespace Maiguard.Core.AppSettings
         /// <summary>
         /// </summary>
         public const string Options = "RedisCacheConfiguration";
-        /// <summary>
-        /// </summary>
-        public string InstanceName {  get; set; } = string.Empty;
         
         /// <summary>
         /// </summary>

@@ -28,5 +28,11 @@ namespace Maiguard.Core.Models.AccessCodes
         /// </summary>
         /// <example>C000001FHADI</example>
         public string CommunityId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Validity period in hours
+        /// </summary>
+        /// <example>1</example>
+        public int Validity { get; set; }
     }
 }

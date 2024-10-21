@@ -208,5 +208,10 @@ namespace Maiguard.Infrastructure.Repositories
 
             return result.FirstOrDefault();
         }
+
+        public Task<int> ValidateResidentId(string residentId, string communityId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

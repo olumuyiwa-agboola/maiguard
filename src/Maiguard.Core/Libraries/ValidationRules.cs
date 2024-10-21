@@ -124,6 +124,19 @@ namespace Maiguard.Core.Libraries
                 .Length(6).WithMessage(ValidationMessages.RequiredLengthForDigitsNotProvided)
                 .Matches(ValidationRegexes.InvitationCode).WithMessage(ValidationMessages.RegexNotMatched + ValidationRegexes.InvitationCode);
         }
+
+        /// <summary>
+        /// Access code validity period validator
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ruleBuilder"></param>
+        /// <returns></returns>
+        public static IRuleBuilderOptions<T, int> AccessCodeValidityPeriodValidator<T>(this IRuleBuilder<T, int> ruleBuilder)
+        {
+            return ruleBuilder
+                .NotEmpty().WithMessage(ValidationMessages.IsRequired)
+                .InclusiveBetween(1,5).WithMessage(ValidationMessages.IsOutOfRange);
+        }
     }
 
 }

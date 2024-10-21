@@ -50,5 +50,14 @@ namespace Maiguard.Core.Abstractions.IRepositories
         /// <param name="request"></param>
         /// <returns>int</returns>
         public Task<int> ValidateAdminIdAndResidentEmail(InvitationCodeGenerationRequest request);
+
+        /// <summary>
+        /// Executes the data access logic for validating a 
+        /// resident as a prerequisite for access code generation
+        /// </summary>
+        /// <param name="residentId"></param>
+        /// <param name="communityId"></param>
+        /// <returns>int</returns>
+        public Task<int> ValidateResidentId(string residentId, string communityId);
     }
 }

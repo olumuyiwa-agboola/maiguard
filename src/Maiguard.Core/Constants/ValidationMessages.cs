@@ -34,5 +34,10 @@ namespace Maiguard.Core.Constants
         /// <summary>
         /// </summary>
         public const string IsNotRequired = "{PropertyName} must be null or empty";
+
+        /// <summary>
+        /// </summary>
+        public const string IsOutOfRange = "{PropertyName} must be an integer between {From} and {To}";
+
     }
 }

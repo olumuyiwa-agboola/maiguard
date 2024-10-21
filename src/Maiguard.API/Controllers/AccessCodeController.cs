@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using Maiguard.Core.Abstractions.IFactories;
 using Maiguard.Core.Abstractions.IServices;
+using Maiguard.Core.Attributes;
 using Maiguard.Core.Models.AccessCodes;
 using Maiguard.Core.Models.APIResponseModels;
 using Microsoft.AspNetCore.Mvc;
@@ -9,14 +10,10 @@ namespace Maiguard.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class AccessCodeController : ControllerBase
+    [ValidateModel]
+    public class AccessCodeController(IAccessCodeService accessCodeService) : ControllerBase
     {
-        private readonly IAccessCodeService _accessCodeService;
-
-        public AccessCodeController(IAccessCodeService accessCodeService)
-        {
-            _accessCodeService = accessCodeService;
-        }
+        private readonly IAccessCodeService _accessCodeService = accessCodeService;
 
         [HttpPost]
         [Route("Generate")]

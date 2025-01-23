@@ -96,7 +96,7 @@ namespace Maiguard.Core.Factories
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
             };
 
-            problemDetails.Extensions["errors"] = validationErrors;
+            //problemDetails.Extensions["errors"] = validationErrors;
 
             return new ApiResponseWithStatusCode()
             {

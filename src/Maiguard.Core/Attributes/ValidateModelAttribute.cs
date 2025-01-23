@@ -62,7 +62,7 @@ namespace Maiguard.Core.Attributes
                             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
                         };
 
-                        validationProblemDetails.Extensions["errors"] = validationFailures;
+                        //validationProblemDetails.Extensions["errors"] = validationFailures;
 
                         context.Result = new BadRequestObjectResult(validationProblemDetails);
 

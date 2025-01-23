@@ -1,10 +1,8 @@
-﻿using Azure.Core;
-using Maiguard.Core.Abstractions.IFactories;
-using Maiguard.Core.Abstractions.IServices;
+﻿using Microsoft.AspNetCore.Mvc;
 using Maiguard.Core.Attributes;
 using Maiguard.Core.Models.AccessCodes;
+using Maiguard.Core.Abstractions.IServices;
 using Maiguard.Core.Models.APIResponseModels;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Maiguard.API.Controllers
 {
